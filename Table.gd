@@ -11,13 +11,14 @@ extends Node
 # More flair for DMD frames
 # Song volume still seems a bit quieter than SFX volume
 # Improve pixel precision for all collision shapes
+# Color for the toy
+# More graphic detail for the lower corner areas
 
 # TODO - FIXES
 
 # "Failed to get modified time for ...particle.png"
-# Does the kicker logic need to check for the correct side?
 # Clamp velocity (max = 4337?)
-# Something Is Up with the collision shape of the left flipper
+# Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
 
 # TODO - BALANCE
 
@@ -38,6 +39,10 @@ extends Node
 
 # Gamepad
 # Wizard mode, triggered by each victory
+# - multiball
+# - lane hunt
+# - target hunt
+# - bumpers
 # Wizard mode 
 # - no lanes are lit, no lanes give inspiration bonus
 # Correct looping behavior during:
@@ -312,6 +317,7 @@ func kick(ball, kicker, force):
 	add_score(SCORE_KICKER)
 	impact(ball, Color(1.0, 1.0, 0.5))
 
+	"""
 	# Find offset from ball to kicker origin.
 	var offset = ball.get_position() - kicker.get_position()
 	# Rotate around kicker origin based on kicker orientation.
@@ -320,6 +326,8 @@ func kick(ball, kicker, force):
 	if rotated_offset.x > 0:
 		# If so, apply impulse.
 		ball.apply_central_impulse(Vector2.RIGHT.rotated(kicker.get_global_rotation()) * force)
+	"""
+	ball.apply_central_impulse(Vector2.RIGHT.rotated(kicker.get_global_rotation()) * force)
 
 # Nudge the table up.
 func nudge_up(first_impulse = true):
