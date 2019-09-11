@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/eject.wav-c945bc37023ff3211c35b2048ec9ad69.sample"
+
+[deps]
+
+source_file="res://sound/eject.wav"
+dest_files=[ "res://.import/eject.wav-c945bc37023ff3211c35b2048ec9ad69.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 0.7
+
+[sub_resource type="CapsuleShape2D" id=2]
+height = 90.0
+
+[node name="Rubberband" type="RigidBody2D"]
+mode = 1
+physics_material_override = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )

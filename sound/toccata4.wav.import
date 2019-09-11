@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/toccata4.wav-500940c76e235378db9bc96027e6c8cd.sample"
+
+[deps]
+
+source_file="res://sound/toccata4.wav"
+dest_files=[ "res://.import/toccata4.wav-500940c76e235378db9bc96027e6c8cd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

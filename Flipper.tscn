@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Flipper.gd" type="Script" id=1]
+[ext_resource path="res://graphics/flipper.png" type="Texture" id=2]
+[ext_resource path="res://sound/flipper.wav" type="AudioStream" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+absorbent = true
+
+[node name="Flipper" type="Node2D"]
+pause_mode = 1
+script = ExtResource( 1 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+mode = 3
+physics_material_override = SubResource( 1 )
+continuous_cd = 2
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D"]
+position = Vector2( 65, 0 )
+texture = ExtResource( 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RigidBody2D"]
+polygon = PoolVector2Array( -4.87572, -22.1101, 143.976, -13.7499, 149.685, -9.87572, 151.928, -5.38978, 152.132, 3.78601, 149.278, 8.67976, 143.568, 11.7384, -3.65228, 22.9532, -13.032, 19.6907, -18.7414, 14.3891, -22.4117, 5.41726, -22.8195, -6.20541, -19.1492, -14.1578, -12.6242, -19.8671 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://graphics/needle.png" type="Texture" id=1]
+[ext_resource path="res://Needle.gd" type="Script" id=2]
+
+[node name="Needle" type="Sprite"]
+texture = ExtResource( 1 )
+offset = Vector2( -46, 0 )
+script = ExtResource( 2 )

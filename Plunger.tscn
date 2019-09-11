@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Plunger.gd" type="Script" id=1]
+[ext_resource path="res://graphics/plunger.png" type="Texture" id=2]
+[ext_resource path="res://sound/plunger.wav" type="AudioStream" id=3]
+
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7.65226, 6.97263 )
+
+[node name="Plunger" type="Node2D"]
+pause_mode = 1
+script = ExtResource( 1 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+mode = 3
+continuous_cd = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D"]
+position = Vector2( 0, 72 )
+texture = ExtResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/wizard.wav-9b7becea3e6bd541a10e455b62fcede0.sample"
+
+[deps]
+
+source_file="res://sound/wizard.wav"
+dest_files=[ "res://.import/wizard.wav-9b7becea3e6bd541a10e455b62fcede0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0

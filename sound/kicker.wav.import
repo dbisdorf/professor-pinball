@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/kicker.wav-ef34e713018cd7c13f60ad3c263b7a60.sample"
+
+[deps]
+
+source_file="res://sound/kicker.wav"
+dest_files=[ "res://.import/kicker.wav-ef34e713018cd7c13f60ad3c263b7a60.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=false
+edit/loop=false
+compress/mode=0
