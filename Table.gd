@@ -4,10 +4,11 @@ extends Node
 
 # TODO - FEATURES
 
-# Readme with license and acknowledgments
-
 # TODO - GRAPHICS AND SOUND
 
+# Unify lightning color in splash screen
+# Shift the position of the moon in the upper left
+# Is the wizard mode display too extreme? Should it highlight the lanes more?
 # More flair for DMD frames
 # Song volume still seems a bit quieter than SFX volume
 # Improve pixel precision for all collision shapes
@@ -16,6 +17,7 @@ extends Node
 
 # TODO - FIXES
 
+# Ball-out didn't halt the lane hunt event
 # "Failed to get modified time for ...particle.png"
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
@@ -27,9 +29,7 @@ extends Node
 # TODO - POLISH
 
 # Verify no horizontal collision edges from table walls
-# Kickers are actually "slingshots"?
 # Adjust scores for task difficulty
-# Move code, graphics, scenes to their own subfolders?
 # Are exits just rollovers?
 # Remove debug code
 # Inspect all debugger warnings/errors
@@ -39,12 +39,11 @@ extends Node
 
 # Gamepad
 # Wizard mode, triggered by each victory
-# - multiball
 # - lane hunt
-# - target hunt
-# - bumpers
 # Wizard mode 
 # - no lanes are lit, no lanes give inspiration bonus
+# - bumpers don't count up
+# - all victories reset so you can do wizard mode again
 # Correct looping behavior during:
 # - wizard mode 
 
@@ -205,8 +204,18 @@ func _process(delta):
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
-			if event.scancode == KEY_W:
+			if event.scancode == KEY_E:
 				change_special()
+			if event.scancode == KEY_W:
+				#lane_hunter_victory = true
+				target_hunter_victory = true
+				multiball_victory = true
+				bumper_victory = true
+				bumps = 110
+				$TargetHuntVictoryLight.switch_on()
+				#$LaneHuntVictoryLight.switch_on()
+				$MultiballVictoryLight.switch_on()
+				$BumperVictoryLight.switch_on()
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -308,6 +317,7 @@ func bump(ball, bumper, force):
 			$DMD.set_parameter("reward", SCORE_ALL_BUMPERS)
 			$DMD.show_once($DMD.DISPLAY_BUMPER_REWARD)
 			$BumperVictoryLight.flash_on()
+			check_wizard_mode()
 	elif bumps % BUMPER_PROGRESS == 0:
 		$DMD.set_parameter("progress", BUMPER_GOAL - bumps)
 		$DMD.show_once($DMD.DISPLAY_BUMPER_PROGRESS)
@@ -543,7 +553,7 @@ func check_lane_hunt():
 	if lane_hunt_1 and lane_hunt_2 and lane_hunt_3:
 		lane_hunter_victory = true
 		$LaneHuntVictoryLight.flash_on()
-		check_victories()
+		check_wizard_mode()
 		add_score(SCORE_LANE_HUNT)
 		$AudioStreamPlayer.play_award()
 		$DMD.set_parameter("reward", SCORE_LANE_HUNT)
@@ -557,6 +567,7 @@ func wizard_lane():
 	add_score(SCORE_WIZARD_LANE)
 	$DMD.set_parameter("reward", SCORE_WIZARD_LANE)
 	$DMD.show_once($DMD.DISPLAY_WIZARD_JACKPOT)
+	$AudioStreamPlayer.play_jackpot()
 
 # Switch which special reward is lit, in front of the capture lane.
 func change_special():
@@ -574,40 +585,52 @@ func change_special():
 			$SpecialLight3.switch_off()
 			$SpecialLight1.switch_on()
 
-# After completing an event, check whether the player has completed all events.
-func check_victories():
-	if lane_hunter_victory and target_hunter_victory and multiball_victory and bumper_victory:
-		# Display wizard mode effects if all events are complete.
-		lane_hunter_victory = false
-		target_hunter_victory = false
-		multiball_victory = false
-		bumper_victory = false
-		lit_lane = 0
-		$DMD.show_once($DMD.DISPLAY_WIZARD)
-		$LaneLight1.flash()
-		$LaneLight2.flash(0.3, 0.06)
-		$LaneLight3.flash(0.3, 0.12)
-		$LaneLight4.flash(0.3, 0.18)
-		$LaneLight5.flash(0.3, 0.24)
-		$TargetHuntVictoryLight.flash(0.3)
-		$LaneHuntVictoryLight.flash(0.3, 0.075)
-		$MultiballVictoryLight.flash(0.3, 0.15)
-		$BumperVictoryLight.flash(0.3, 0.225)
-		$LeftTargetLight.flash()
-		$RightTargetLight.flash(0.3, 0.15)
+# Identify whether all events are complete.
+func all_events_complete():
+	return lane_hunter_victory and target_hunter_victory and multiball_victory and bumper_victory
+
+# Get ready for wizard mode if all events are complete.
+func check_wizard_mode():
+	if all_events_complete():
 		$SpecialLight1.flash()
-		$SpecialLight2.flash(0.3, 0.1)
-		$SpecialLight3.flash(0.3, 0.2)
-		$X2Light.flash()
-		$X4Light.flash(0.3, 0.1)
-		$X8Light.flash(0.3, 0.2)
-		$SaveLight.flash()
-		$SkillLight1.flash(0.3, 0.1)
-		$SkillLight1.flash(0.3, 0.2)
-		$SkillLight1.flash(0.3)		
-		mode = MODE_WIZARD
-		$AudioStreamPlayer.play_wizard()
-		$WizardModeTimer.start()
+		$SpecialLight2.flash()
+		$SpecialLight3.flash()
+		$Toy.raise_all_gates()
+
+# Start wizard mode.
+func start_wizard_mode():
+	lane_hunter_victory = false
+	target_hunter_victory = false
+	multiball_victory = false
+	bumper_victory = false
+	lit_lane = 0
+	bumps = 0
+	$DMD.show_once($DMD.DISPLAY_WIZARD)
+	$LaneLight1.flash()
+	$LaneLight2.flash(0.3, 0.06)
+	$LaneLight3.flash(0.3, 0.12)
+	$LaneLight4.flash(0.3, 0.18)
+	$LaneLight5.flash(0.3, 0.24)
+	$TargetHuntVictoryLight.flash(0.3)
+	$LaneHuntVictoryLight.flash(0.3, 0.075)
+	$MultiballVictoryLight.flash(0.3, 0.15)
+	$BumperVictoryLight.flash(0.3, 0.225)
+	$LeftTargetLight.flash()
+	$RightTargetLight.flash(0.3, 0.15)
+	$SpecialLight1.flash()
+	$SpecialLight2.flash(0.3, 0.1)
+	$SpecialLight3.flash(0.3, 0.2)
+	$X2Light.flash()
+	$X4Light.flash(0.3, 0.1)
+	$X8Light.flash(0.3, 0.2)
+	$SaveLight.flash()
+	$SkillLight1.flash(0.3, 0.1)
+	$SkillLight1.flash(0.3, 0.2)
+	$SkillLight1.flash(0.3)		
+	mode = MODE_WIZARD
+	$AudioStreamPlayer.play_wizard()
+	$WizardModeTimer.start()
+	$BallReleaseRightTimer.start(1.0)
 
 # Turn off all the table lights.
 func clear_all_lights():
@@ -664,7 +687,10 @@ func halt_events():
 			$RightTargetLight.switch_off()
 			change_special()
 		MODE_WIZARD:
+			clear_all_lights()
+			change_lit_lane(false)
 			$WizardModeTimer.stop()
+			$Toy.lower_all_gates()
 	mode = MODE_NORMAL
 
 # This function runs multiple times after a game is over.
@@ -717,7 +743,7 @@ func _on_Exit_body_entered(body):
 				# If we're in multiball and there's only one ball left, turn off multiball.
 				halt_events()
 				multiball_victory = true
-				check_victories()
+				check_wizard_mode()
 		else:
 			# If we're not in multiball, that's the end of this ball.
 			halt_events()
@@ -757,58 +783,63 @@ func _on_BallCaptureRight_rollover_entered(body):
 	body.queue_free()
 	if mode == MODE_NORMAL:
 		# If there isn't an event running, we'll issue a reward.
-		$AudioStreamPlayer.play_award()
-		match special_lit:
-			1:
-				# Reward number 1 is to increment the bonus multiplier.
-				match multiplier:
-					1:
-						multiplier = 2
-						$DMD.show_once($DMD.DISPLAY_X2)
-						$X2Light.flash_on()
-					2:
-						multiplier = 4
-						$DMD.show_once($DMD.DISPLAY_X4)
-						$X2Light.switch_off()
-						$X4Light.flash_on()
-					4, 8:
-						multiplier = 8
-						$DMD.show_once($DMD.DISPLAY_X8)
-						$X4Light.switch_off()
-						$X8Light.flash_on()
-				$BallReleaseRightTimer.start()
-				change_special()
-			2:
-				# Reward number 2 is to start the lane hunt event.
-				mode = MODE_LANE_HUNT
-				lane_hunt_1 = false
-				lane_hunt_2 = false
-				lane_hunt_3 = false
-				lit_lane = 0
-				$LaneLight1.flash()
-				$LaneLight2.flash()
-				$LaneLight3.flash()
-				$LaneLight4.switch_off()
-				$LaneLight5.switch_off()
-				$DMD.show_sequence($DMD.LANE_HUNT_SEQ)
-				$SpecialLight2.flash()
-				$BallReleaseRightTimer.start()
-				$LaneHuntTimer.start()
-			3:
-				# Reward number 3 is to start the drop target hunt event.
-				mode = MODE_TARGET_HUNT
-				$DropTarget1.raise()
-				$DropTarget2.raise()
-				$DropTarget3.raise()
-				$DropTarget4.raise()
-				$DropTarget5.raise()
-				$DropTarget6.raise()
-				$DMD.show_sequence($DMD.TARGET_HUNT_SEQ)
-				$SpecialLight3.flash()
-				$LeftTargetLight.flash()
-				$RightTargetLight.flash()
-				$BallReleaseRightTimer.start()
-				$TargetHuntTimer.start()
+		if all_events_complete():
+			# If we've beat all the events, start wizard mode.
+			start_wizard_mode()
+		else:
+			# Otherwise issue the lit reward.
+			$AudioStreamPlayer.play_award()
+			match special_lit:
+				1:
+					# Reward number 1 is to increment the bonus multiplier.
+					match multiplier:
+						1:
+							multiplier = 2
+							$DMD.show_once($DMD.DISPLAY_X2)
+							$X2Light.flash_on()
+						2:
+							multiplier = 4
+							$DMD.show_once($DMD.DISPLAY_X4)
+							$X2Light.switch_off()
+							$X4Light.flash_on()
+						4, 8:
+							multiplier = 8
+							$DMD.show_once($DMD.DISPLAY_X8)
+							$X4Light.switch_off()
+							$X8Light.flash_on()
+					$BallReleaseRightTimer.start()
+					change_special()
+				2:
+					# Reward number 2 is to start the lane hunt event.
+					mode = MODE_LANE_HUNT
+					lane_hunt_1 = false
+					lane_hunt_2 = false
+					lane_hunt_3 = false
+					lit_lane = 0
+					$LaneLight1.flash()
+					$LaneLight2.flash()
+					$LaneLight3.flash()
+					$LaneLight4.switch_off()
+					$LaneLight5.switch_off()
+					$DMD.show_sequence($DMD.LANE_HUNT_SEQ)
+					$SpecialLight2.flash()
+					$BallReleaseRightTimer.start()
+					$LaneHuntTimer.start()
+				3:
+					# Reward number 3 is to start the drop target hunt event.
+					mode = MODE_TARGET_HUNT
+					$DropTarget1.raise()
+					$DropTarget2.raise()
+					$DropTarget3.raise()
+					$DropTarget4.raise()
+					$DropTarget5.raise()
+					$DropTarget6.raise()
+					$DMD.show_sequence($DMD.TARGET_HUNT_SEQ)
+					$SpecialLight3.flash()
+					$LeftTargetLight.flash()
+					$RightTargetLight.flash()
+					$BallReleaseRightTimer.start()
+					$TargetHuntTimer.start()
 	else:
 		# If there's an event in progress, just release the ball from the capture lane.
 		$BallReleaseRightTimer.start(1.0)
@@ -912,7 +943,7 @@ func check_target_hunting():
 		$TargetHuntTimer.stop()
 		$ResetLeftTargets.start()
 		$ResetRightTargets.start()
-		check_victories()
+		check_wizard_mode()
 
 # When this timer expires, pop up the targets on the right side.
 func _on_ResetRightTargets_timeout():
@@ -922,13 +953,13 @@ func _on_ResetRightTargets_timeout():
 
 # The next two functions manage hits against the lower kickers.
 func _on_LKicker_body_entered(body):
-	if mode == MODE_NORMAL:
+	if mode == MODE_NORMAL and not all_events_complete():
 		change_special()
 	$LeftKickerLight.flash_once()
 	kick(body, $LKicker, FORCE_KICKER)
 
 func _on_RKicker_body_entered(body):
-	if mode == MODE_NORMAL:
+	if mode == MODE_NORMAL and not all_events_complete():
 		change_special()
 	$RightKickerLight.flash_once()
 	kick(body, $RKicker, FORCE_KICKER)
@@ -1012,8 +1043,6 @@ func _on_TargetHuntTimer_timeout():
 
 # End wizard mode when this timer expires.
 func _on_WizardModeTimer_timeout():
-	clear_all_lights()
-	change_lit_lane(false)
 	halt_events()
 
 # Turn off ball save when this timer expires.
