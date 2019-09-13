@@ -37,6 +37,12 @@ func lower_all_gates():
 	$ToyGate2.lower()
 	$ToyGate3.lower()
 
+# Raise all three gates.
+func raise_all_gates():
+	$ToyGate1.raise()
+	$ToyGate2.raise()
+	$ToyGate3.raise()	
+
 # Tell the toy to reset itself.
 func reset():
 	lower_all_gates()
