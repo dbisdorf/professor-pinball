@@ -4,19 +4,24 @@ extends Node
 
 # TODO - FEATURES
 
+# Give DMD instructions to activate eureka
+
 # TODO - GRAPHICS AND SOUND
 
 # Unify lightning color in splash screen
 # Shift the position of the moon in the upper left
 # Is the wizard mode display too extreme? Should it highlight the lanes more?
 # More flair for DMD frames
-# Song volume still seems a bit quieter than SFX volume
+# Volume for song #3 still seems a bit quieter than SFX volume
 # Improve pixel precision for all collision shapes
 # Color for the toy
 # More graphic detail for the lower corner areas
+# Adjust light positions to cover black areas
+# "Eureka" in DMD should be thicker
 
 # TODO - FIXES
 
+# Release ball more quickly when starting a timed event?
 # Ball-out didn't halt the lane hunt event
 # "Failed to get modified time for ...particle.png"
 # Clamp velocity (max = 4337?)
@@ -38,7 +43,10 @@ extends Node
 # TODO - TESTING
 
 # Gamepad
+# What happens if you're only missing one victory (bumpers) and you repeat another (lanes)?
 # Wizard mode, triggered by each victory
+# - bumpers
+# - drop targets
 # - lane hunt
 # Wizard mode 
 # - no lanes are lit, no lanes give inspiration bonus
@@ -200,22 +208,22 @@ func _process(delta):
 	$LeftNeedle.set_level(max_x / NEEDLE_MAX_VELOCITY)
 	$RightNeedle.set_level(max_y / NEEDLE_MAX_VELOCITY)
 
-# debug code
+# debug code debug code debug code
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
 			if event.scancode == KEY_E:
 				change_special()
 			if event.scancode == KEY_W:
-				#lane_hunter_victory = true
+				lane_hunter_victory = true
 				target_hunter_victory = true
 				multiball_victory = true
-				bumper_victory = true
-				bumps = 110
+				#bumper_victory = true
+				bumps = 90
 				$TargetHuntVictoryLight.switch_on()
-				#$LaneHuntVictoryLight.switch_on()
+				$LaneHuntVictoryLight.switch_on()
 				$MultiballVictoryLight.switch_on()
-				$BumperVictoryLight.switch_on()
+				#$BumperVictoryLight.switch_on()
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -440,6 +448,7 @@ func clear_skill_gates():
 	$SkillLight1.switch_off()
 	$SkillLight2.switch_off()
 	$SkillLight3.switch_off()
+	$SkillShotTimer.stop()
 
 # Increment score, update DMD, and check if we earned an extra ball.
 func add_score(points):
@@ -605,28 +614,35 @@ func start_wizard_mode():
 	bumper_victory = false
 	lit_lane = 0
 	bumps = 0
+	$BallSaveTimer.stop()
+	save_lit = false
+	
 	$DMD.show_once($DMD.DISPLAY_WIZARD)
-	$LaneLight1.flash()
-	$LaneLight2.flash(0.3, 0.06)
-	$LaneLight3.flash(0.3, 0.12)
-	$LaneLight4.flash(0.3, 0.18)
-	$LaneLight5.flash(0.3, 0.24)
-	$TargetHuntVictoryLight.flash(0.3)
-	$LaneHuntVictoryLight.flash(0.3, 0.075)
-	$MultiballVictoryLight.flash(0.3, 0.15)
-	$BumperVictoryLight.flash(0.3, 0.225)
-	$LeftTargetLight.flash()
-	$RightTargetLight.flash(0.3, 0.15)
-	$SpecialLight1.flash()
-	$SpecialLight2.flash(0.3, 0.1)
-	$SpecialLight3.flash(0.3, 0.2)
-	$X2Light.flash()
-	$X4Light.flash(0.3, 0.1)
-	$X8Light.flash(0.3, 0.2)
-	$SaveLight.flash()
-	$SkillLight1.flash(0.3, 0.1)
-	$SkillLight1.flash(0.3, 0.2)
-	$SkillLight1.flash(0.3)		
+	$LaneLight1.flash(0.2)
+	$LaneLight2.flash(0.2)
+	$LaneLight3.flash(0.2)
+	$LaneLight4.flash(0.2)
+	$LaneLight5.flash(0.2)
+	
+	$SaveLight.flash(3.0, 0.6)
+	
+	$X2Light.flash(3.0, 1.2)
+	$X4Light.flash(3.0, 1.2)
+	$X8Light.flash(3.0, 1.2)
+	
+	$TargetHuntVictoryLight.flash(3.0, 1.8)
+	$LaneHuntVictoryLight.flash(3.0, 1.8)
+	$MultiballVictoryLight.flash(3.0, 1.8)
+	$BumperVictoryLight.flash(3.0, 1.8)
+	
+	$LeftTargetLight.flash(3.0, 2.4)
+	$RightTargetLight.flash(3.0, 2.4)
+	
+	$SpecialLight1.flash(3.0)
+	$SpecialLight2.flash(3.0)
+	$SpecialLight3.flash(3.0)
+	$Toy.flash(3.0)
+	
 	mode = MODE_WIZARD
 	$AudioStreamPlayer.play_wizard()
 	$WizardModeTimer.start()

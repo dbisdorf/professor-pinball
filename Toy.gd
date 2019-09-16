@@ -65,8 +65,8 @@ func are_all_gates_raised():
 	return $ToyGate1.is_raised() and $ToyGate2.is_raised() and $ToyGate3.is_raised()
 
 # Make the toy's light flash.
-func flash():
-	$Light.flash()
+func flash(flash_time = 0.3, first_time = 0.0):
+	$Light.flash(flash_time, first_time)
 
 # Make the toy's light flash a few times, then switch off.
 func flash_off():
