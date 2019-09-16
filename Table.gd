@@ -4,8 +4,6 @@ extends Node
 
 # TODO - FEATURES
 
-# Give DMD instructions to activate eureka
-
 # TODO - GRAPHICS AND SOUND
 
 # Unify lightning color in splash screen
@@ -21,6 +19,7 @@ extends Node
 
 # TODO - FIXES
 
+# Align flippers with kickers
 # Release ball more quickly when starting a timed event?
 # Ball-out didn't halt the lane hunt event
 # "Failed to get modified time for ...particle.png"
@@ -44,8 +43,8 @@ extends Node
 
 # Gamepad
 # What happens if you're only missing one victory (bumpers) and you repeat another (lanes)?
+# Can/should wizard mode interrupt another event?
 # Wizard mode, triggered by each victory
-# - bumpers
 # - drop targets
 # - lane hunt
 # Wizard mode 
@@ -605,9 +604,11 @@ func check_wizard_mode():
 		$SpecialLight2.flash()
 		$SpecialLight3.flash()
 		$Toy.raise_all_gates()
+		$WizardReadyTimer.start()
 
 # Start wizard mode.
 func start_wizard_mode():
+	$WizardReadyTimer.stop()
 	lane_hunter_victory = false
 	target_hunter_victory = false
 	multiball_victory = false
@@ -733,6 +734,7 @@ func game_over():
 		_:
 			# If this is the first entry to this function, show the game over message.
 			mode = MODE_GAME_OVER
+			$WizardModeTimer.stop()
 			$Toy.reset()
 			$DMD.show_and_keep($DMD.DISPLAY_GAME_OVER)
 			$AudioStreamPlayer.play_end()
@@ -1137,3 +1139,7 @@ func _on_SkillShotTimer_timeout():
 # Intermittently flash the window light in the upper left.
 func _on_WindowTimer_timeout():
 	$WindowLight.flash_off()
+
+func _on_WizardReadyTimer_timeout():
+	if mode in [MODE_NORMAL, MODE_LANE_HUNT, MODE_MULTIBALL, MODE_TARGET_HUNT]:
+		$DMD.show_once($DMD.DISPLAY_WIZARD_READY)

@@ -314,6 +314,9 @@ one_shot = true
 wait_time = 10.0
 autostart = true
 
+[node name="WizardReadyTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [node name="LaneLight1" parent="." instance=ExtResource( 10 )]
 position = Vector2( 117.935, 998.914 )
 rotation = 2.77732
@@ -591,6 +594,7 @@ off_light = Color( 1, 1, 1, 0 )
 [connection signal="timeout" from="BallLostTimer" to="." method="_on_BallLostTimer_timeout"]
 [connection signal="timeout" from="SkillShotTimer" to="." method="_on_SkillShotTimer_timeout"]
 [connection signal="timeout" from="WindowTimer" to="." method="_on_WindowTimer_timeout"]
+[connection signal="timeout" from="WizardReadyTimer" to="." method="_on_WizardReadyTimer_timeout"]
 [connection signal="rollover_entered" from="Toy/ToyRollover1" to="." method="_on_ToyRollover1_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover2" to="." method="_on_ToyRollover2_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover3" to="." method="_on_ToyRollover3_rollover_entered"]

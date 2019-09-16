@@ -52,7 +52,8 @@ enum {
 	DISPLAY_LANE_BONUS,
 	DISPLAY_LOOP_BONUS,
 	DISPLAY_TARGET_BONUS,
-	DISPLAY_TOTAL_BONUS}
+	DISPLAY_TOTAL_BONUS,
+	DISPLAY_WIZARD_READY}
 
 # This dictionary gives the duration of each display, in seconds.
 const DISPLAY_TIME = {
@@ -93,7 +94,8 @@ const DISPLAY_TIME = {
 	DISPLAY_LANE_BONUS: 1.0,
 	DISPLAY_LOOP_BONUS: 1.0,
 	DISPLAY_TARGET_BONUS: 1.0,
-	DISPLAY_TOTAL_BONUS: 2.0}
+	DISPLAY_TOTAL_BONUS: 2.0,
+	DISPLAY_WIZARD_READY: 3.0}
 
 # This dictionary gives the priority of each display. A low-priority
 # display will not interrupt a high-priority display.
@@ -135,7 +137,8 @@ const DISPLAY_PRIORITY = {
 	DISPLAY_LANE_BONUS: 0,
 	DISPLAY_LOOP_BONUS: 0,
 	DISPLAY_TARGET_BONUS: 0,
-	DISPLAY_TOTAL_BONUS: 0}
+	DISPLAY_TOTAL_BONUS: 0,
+	DISPLAY_WIZARD_READY: 3}
 
 # Certain displays appear in loops or in fixed sequences.
 const START_SEQ = [DISPLAY_TITLE, DISPLAY_HELP_KEY, DISPLAY_START_KEY, DISPLAY_HIGH_SCORE]
@@ -277,7 +280,7 @@ func format_text():
 			set_upper_text("PRESS ENTER")
 			set_lower_text("TO BEGIN")
 		DISPLAY_LANE_HUNT_RULES:
-			set_upper_text("HIT ALL")
+			set_upper_text("SHOOT ALL")
 			set_lower_text("FLASHING LANES")
 		DISPLAY_TARGET_HUNT_RULES:
 			set_upper_text("CLEAR BOTH")
@@ -312,6 +315,9 @@ func format_text():
 			else:
 				set_upper_text("TOTAL BONUS X" + str(parameters["multiplier"]))
 			set_lower_text(str(parameters["reward"]))
+		DISPLAY_WIZARD_READY:
+			set_upper_text("SHOOT FLASHING")
+			set_lower_text("LANE FOR EUREKA")
 
 # Internal common display logic. Don't call this from outside this script.
 func show_something(display_number, and_keep = false):
