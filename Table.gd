@@ -6,16 +6,14 @@ extends Node
 
 # TODO - GRAPHICS AND SOUND
 
-# Unify lightning color in splash screen
-# Shift the position of the moon in the upper left
-# Is the wizard mode display too extreme? Should it highlight the lanes more?
+# Improve icon
 # More flair for DMD frames
-# Volume for song #3 still seems a bit quieter than SFX volume
+# Volume for song #3 still seems quieter than SFX volume
 # Improve pixel precision for all collision shapes
 # Color for the toy
 # More graphic detail for the lower corner areas
 # Adjust light positions to cover black areas
-# "Eureka" in DMD should be thicker
+# More impressive sounds/graphics for wizard mode (ball trail, flipper sounds)
 
 # TODO - FIXES
 
@@ -26,7 +24,7 @@ extends Node
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
 
-# TODO - BALANCE
+# TODO - BALANCE`
 
 # Too easy to get stuck in bumpers
 
@@ -43,16 +41,10 @@ extends Node
 
 # Gamepad
 # What happens if you're only missing one victory (bumpers) and you repeat another (lanes)?
-# Can/should wizard mode interrupt another event?
-# Wizard mode, triggered by each victory
-# - drop targets
-# - lane hunt
 # Wizard mode 
-# - no lanes are lit, no lanes give inspiration bonus
-# - bumpers don't count up
-# - all victories reset so you can do wizard mode again
-# Correct looping behavior during:
-# - wizard mode 
+# - confirm that all victories reset so you can do wizard mode again
+# -- lane hunt
+# -- target hunt
 
 const HIGH_SCORE_FILE = "user://high_score"
 
@@ -217,12 +209,13 @@ func _unhandled_input(event):
 				lane_hunter_victory = true
 				target_hunter_victory = true
 				multiball_victory = true
-				#bumper_victory = true
-				bumps = 90
+				bumper_victory = true
+				bumps = 110
 				$TargetHuntVictoryLight.switch_on()
 				$LaneHuntVictoryLight.switch_on()
 				$MultiballVictoryLight.switch_on()
-				#$BumperVictoryLight.switch_on()
+				$BumperVictoryLight.switch_on()
+				check_wizard_mode()
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -609,13 +602,8 @@ func check_wizard_mode():
 # Start wizard mode.
 func start_wizard_mode():
 	$WizardReadyTimer.stop()
-	lane_hunter_victory = false
-	target_hunter_victory = false
-	multiball_victory = false
-	bumper_victory = false
-	lit_lane = 0
-	bumps = 0
 	$BallSaveTimer.stop()
+	lit_lane = 0
 	save_lit = false
 	
 	$DMD.show_once($DMD.DISPLAY_WIZARD)
@@ -624,25 +612,15 @@ func start_wizard_mode():
 	$LaneLight3.flash(0.2)
 	$LaneLight4.flash(0.2)
 	$LaneLight5.flash(0.2)
-	
-	$SaveLight.flash(3.0, 0.6)
-	
-	$X2Light.flash(3.0, 1.2)
-	$X4Light.flash(3.0, 1.2)
-	$X8Light.flash(3.0, 1.2)
-	
-	$TargetHuntVictoryLight.flash(3.0, 1.8)
-	$LaneHuntVictoryLight.flash(3.0, 1.8)
-	$MultiballVictoryLight.flash(3.0, 1.8)
-	$BumperVictoryLight.flash(3.0, 1.8)
-	
-	$LeftTargetLight.flash(3.0, 2.4)
-	$RightTargetLight.flash(3.0, 2.4)
-	
-	$SpecialLight1.flash(3.0)
-	$SpecialLight2.flash(3.0)
-	$SpecialLight3.flash(3.0)
-	$Toy.flash(3.0)
+	$SpecialLight1.switch_off()
+	$SpecialLight2.switch_off()
+	$SpecialLight3.switch_off()	
+	$TargetHuntVictoryLight.flash(1.0)
+	$LaneHuntVictoryLight.flash(1.0, 2.0)
+	$MultiballVictoryLight.flash(1.0)
+	$BumperVictoryLight.flash(1.0, 2.0)
+	$SaveLight.switch_on()
+	$Toy.flash(1.0)
 	
 	mode = MODE_WIZARD
 	$AudioStreamPlayer.play_wizard()
@@ -704,10 +682,16 @@ func halt_events():
 			$RightTargetLight.switch_off()
 			change_special()
 		MODE_WIZARD:
+			lane_hunter_victory = false
+			target_hunter_victory = false
+			multiball_victory = false
+			bumper_victory = false
+			bumps = 0
 			clear_all_lights()
 			change_lit_lane(false)
 			$WizardModeTimer.stop()
 			$Toy.lower_all_gates()
+			change_special()
 	mode = MODE_NORMAL
 
 # This function runs multiple times after a game is over.
@@ -754,6 +738,7 @@ func _on_Exit_body_entered(body):
 		$AudioStreamPlayer.play_save()
 	elif mode == MODE_WIZARD:
 		# If we're in wizard mode, eject a replacement ball.
+		$SaveLight.flash_on()
 		$BallEjectTimer.start()
 	else:
 		if mode == MODE_MULTIBALL:

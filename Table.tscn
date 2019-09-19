@@ -53,7 +53,6 @@ pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Walls" type="RigidBody2D" parent="."]
-editor/display_folded = true
 collision_layer = 4
 collision_mask = 2
 mode = 1
@@ -186,6 +185,7 @@ script = ExtResource( 9 )
 
 [node name="SaveLight" parent="." instance=ExtResource( 10 )]
 position = Vector2( 406.144, 1789.85 )
+scale = Vector2( 0.98, 0.95 )
 texture = ExtResource( 11 )
 
 [node name="SpecialLight1" parent="." instance=ExtResource( 10 )]
@@ -357,7 +357,7 @@ rotation = 0.393895
 texture = ExtResource( 20 )
 
 [node name="BumperVictoryLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 586.951, 1401.28 )
+position = Vector2( 587.482, 1400.97 )
 rotation = 0.594814
 texture = ExtResource( 21 )
 
@@ -486,6 +486,7 @@ position = Vector2( 0.664673, -97.4904 )
 rotation = 1.57358
 
 [node name="Light" parent="Toy" instance=ExtResource( 10 )]
+position = Vector2( 0, -6 )
 texture = ExtResource( 33 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Toy"]
