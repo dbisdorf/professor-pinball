@@ -6,20 +6,17 @@ extends Node
 
 # TODO - GRAPHICS AND SOUND
 
-# Improve icon
 # More flair for DMD frames
 # Volume for song #3 still seems quieter than SFX volume
 # Improve pixel precision for all collision shapes
 # Color for the toy
 # More graphic detail for the lower corner areas
-# Adjust light positions to cover black areas
 # More impressive sounds/graphics for wizard mode (ball trail, flipper sounds)
 
 # TODO - FIXES
 
 # Align flippers with kickers
 # Release ball more quickly when starting a timed event?
-# Ball-out didn't halt the lane hunt event
 # "Failed to get modified time for ...particle.png"
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
@@ -39,12 +36,7 @@ extends Node
 
 # TODO - TESTING
 
-# Gamepad
 # What happens if you're only missing one victory (bumpers) and you repeat another (lanes)?
-# Wizard mode 
-# - confirm that all victories reset so you can do wizard mode again
-# -- lane hunt
-# -- target hunt
 
 const HIGH_SCORE_FILE = "user://high_score"
 
@@ -562,6 +554,7 @@ func check_lane_hunt():
 		$LaneHuntTimer.stop()
 		mode = MODE_NORMAL
 		change_lit_lane(false)
+		change_special()
 
 # If the player hits any lane during wizard mode, give an extra reward.
 func wizard_lane():
