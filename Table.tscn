@@ -235,11 +235,11 @@ position = Vector2( 321.454, 357.922 )
 rotation = -1.90656
 
 [node name="Lane4Rollover" parent="." instance=ExtResource( 16 )]
-position = Vector2( 66.5405, 1581.23 )
+position = Vector2( 66.5405, 1580.75 )
 rotation = 3.14159
 
 [node name="Lane5Rollover" parent="." instance=ExtResource( 16 )]
-position = Vector2( 749.243, 1582.16 )
+position = Vector2( 747.092, 1580.73 )
 rotation = 3.14159
 
 [node name="BallCaptureRight" parent="." instance=ExtResource( 16 )]
@@ -333,13 +333,11 @@ rotation = -2.7529
 texture = ExtResource( 17 )
 
 [node name="LaneLight4" parent="." instance=ExtResource( 10 )]
-position = Vector2( 66.6574, 1616.14 )
-rotation = 6.2904
+position = Vector2( 66.6574, 1615.9 )
 texture = ExtResource( 17 )
 
 [node name="LaneLight5" parent="." instance=ExtResource( 10 )]
-position = Vector2( 747.034, 1616.95 )
-rotation = 6.28734
+position = Vector2( 747.272, 1615.87 )
 texture = ExtResource( 17 )
 
 [node name="LaneHuntVictoryLight" parent="." instance=ExtResource( 10 )]
@@ -532,8 +530,8 @@ rotation = 0.32827
 texture = ExtResource( 38 )
 
 [node name="SkillLight3" parent="." instance=ExtResource( 10 )]
-position = Vector2( 700.701, 363.725 )
-rotation = 0.58312
+position = Vector2( 700.828, 363.96 )
+rotation = 0.552303
 texture = ExtResource( 38 )
 
 [node name="SkillRollover1" parent="." instance=ExtResource( 16 )]
