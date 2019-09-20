@@ -53,6 +53,7 @@ pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Walls" type="RigidBody2D" parent="."]
+editor/display_folded = true
 collision_layer = 4
 collision_mask = 2
 mode = 1
@@ -316,6 +317,11 @@ autostart = true
 
 [node name="WizardReadyTimer" type="Timer" parent="."]
 wait_time = 10.0
+
+[node name="ZapTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
 
 [node name="LaneLight1" parent="." instance=ExtResource( 10 )]
 position = Vector2( 117.935, 998.914 )
@@ -594,6 +600,7 @@ off_light = Color( 1, 1, 1, 0 )
 [connection signal="timeout" from="SkillShotTimer" to="." method="_on_SkillShotTimer_timeout"]
 [connection signal="timeout" from="WindowTimer" to="." method="_on_WindowTimer_timeout"]
 [connection signal="timeout" from="WizardReadyTimer" to="." method="_on_WizardReadyTimer_timeout"]
+[connection signal="timeout" from="ZapTimer" to="." method="_on_ZapTimer_timeout"]
 [connection signal="rollover_entered" from="Toy/ToyRollover1" to="." method="_on_ToyRollover1_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover2" to="." method="_on_ToyRollover2_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover3" to="." method="_on_ToyRollover3_rollover_entered"]

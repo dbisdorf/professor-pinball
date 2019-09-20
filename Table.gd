@@ -10,7 +10,6 @@ extends Node
 # Volume for song #3 still seems quieter than SFX volume
 # Improve pixel precision for all collision shapes
 # Color for the toy
-# More graphic detail for the lower corner areas
 # More impressive sounds/graphics for wizard mode (ball trail, flipper sounds)
 
 # TODO - FIXES
@@ -96,6 +95,7 @@ enum {
 var rng = RandomNumberGenerator.new()
 var ball_scene = preload("res://Ball.tscn")
 var impact_scene = preload("res://Impact.tscn")
+var zap_scene = preload("res://Zap.tscn")
 var score
 var ball
 var last_ball
@@ -288,7 +288,7 @@ func new_game():
 func impact(ball, color):
 	var new_impact = impact_scene.instance()
 	new_impact.set_global_position(ball.get_global_position())
-	new_impact.set_color(color)
+	new_impact.setup(color, mode == MODE_WIZARD)
 	call_deferred("add_child", new_impact)
 
 # Common logic for hitting a bumper.
@@ -1121,3 +1121,10 @@ func _on_WindowTimer_timeout():
 func _on_WizardReadyTimer_timeout():
 	if mode in [MODE_NORMAL, MODE_LANE_HUNT, MODE_MULTIBALL, MODE_TARGET_HUNT]:
 		$DMD.show_once($DMD.DISPLAY_WIZARD_READY)
+
+func _on_ZapTimer_timeout():
+	var new_zap = zap_scene.instance()
+	new_zap.set_global_position($Toy.get_global_position())
+	new_zap.rotate(rng.randf_range(0.0, 2 * PI))
+	add_child(new_zap)
+	$ZapTimer.start(rng.randf_range(0.0, 0.75))
