@@ -12,7 +12,6 @@ export var pull_time = 1.0
 export var release_time = 0.05
 export var keycode = "ui_plunger"
 
-var pulling_time = 0.0
 var release_speed = 0.0
 
 func _physics_process(delta):
