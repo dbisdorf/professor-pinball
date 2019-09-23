@@ -4,6 +4,8 @@ extends Node
 
 # TODO - FEATURES
 
+# Include README/LICENSE in build?
+
 # TODO - GRAPHICS AND SOUND
 
 # Volume for song #3 still seems quieter than SFX volume
@@ -15,18 +17,12 @@ extends Node
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
 
-# TODO - BALANCE`
-
-# Too easy to get stuck in bumpers
-
 # TODO - POLISH
 
 # Verify no horizontal collision edges from table walls
 # Adjust scores for task difficulty
-# Are exits just rollovers?
 # Remove debug code
 # Inspect all debugger warnings/errors
-# DMD code needs serious refactoring
 
 # TODO - TESTING
 
@@ -49,7 +45,7 @@ const FORCE_KICKER = 1200.0
 
 # score awards
 const SCORE_BUMPER = 25
-const SCORE_DROP = 50
+const SCORE_DROP = 100
 const SCORE_DROP_ALL = 1000
 const SCORE_KICKER = 10
 const SCORE_LANE = 500
@@ -193,7 +189,10 @@ func _process(delta):
 	$LeftNeedle.set_level(max_x / NEEDLE_MAX_VELOCITY)
 	$RightNeedle.set_level(max_y / NEEDLE_MAX_VELOCITY)
 
-# debug code debug code debug code
+"""
+Uncomment this code to enable special testing controls.
+The E key toggles which capture lane reward is lit.
+The W key marks all events as complete.
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -210,6 +209,7 @@ func _unhandled_input(event):
 				$MultiballVictoryLight.switch_on()
 				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
+"""
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
