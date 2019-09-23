@@ -6,9 +6,7 @@ extends Node
 
 # TODO - GRAPHICS AND SOUND
 
-# More flair for DMD frames
 # Volume for song #3 still seems quieter than SFX volume
-# Improve pixel precision for all collision shapes
 # Sound volume for new sounds
 
 # TODO - FIXES

@@ -72,7 +72,7 @@ polygon = PoolVector2Array( 247.856, 1989.13, 247.258, 1852.62, 19.9753, 1669.52
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Walls"]
 position = Vector2( 46.895, 0 )
 rotation = 0.00309275
-polygon = PoolVector2Array( 692.077, 363.904, 716.091, 384.628, 738.241, 414.182, 754.664, 450.206, 767.018, 503.287, 768.846, 2014.02, 508.904, 2014.25, 508.781, 1876.58, 741.127, 1693.84, 739.072, 1361.55, 696.87, 1169.17, 759.031, 933.229, 700.575, 912.357, 625.842, 1092.24, 603.339, 1083.8, 718.443, 640.972, 731.889, 575.739, 727.7, 514.752, 715.574, 473.789, 705.499, 449.82, 691.641, 426.931, 671.407, 405.565 )
+polygon = PoolVector2Array( 692.077, 363.904, 716.091, 384.628, 738.241, 414.182, 754.664, 450.206, 767.018, 503.287, 768.846, 2014.02, 508.904, 2014.25, 508.781, 1876.58, 741.127, 1693.84, 739.072, 1361.55, 696.87, 1169.17, 759.031, 933.229, 700.575, 912.357, 625.842, 1092.24, 603.339, 1083.8, 718.443, 640.972, 724.854, 614.724, 731.889, 575.739, 732.171, 540.422, 728.091, 505.479, 716.868, 472.942, 705.499, 449.82, 691.641, 426.931, 671.407, 405.565 )
 
 [node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="Walls"]
 position = Vector2( 0, 1 )
@@ -405,12 +405,12 @@ position = Vector2( 544.466, 588.853 )
 texture = ExtResource( 27 )
 
 [node name="LeftKickerLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 160.019, 1636.68 )
+position = Vector2( 157.317, 1637 )
 rotation = 0.0385366
 texture = ExtResource( 28 )
 
 [node name="RightKickerLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 651.037, 1635.78 )
+position = Vector2( 654.279, 1637 )
 rotation = -0.0440311
 scale = Vector2( -1, 1 )
 texture = ExtResource( 28 )
@@ -427,6 +427,7 @@ mode = 3
 script = ExtResource( 29 )
 
 [node name="ToyGate1" parent="Toy" instance=ExtResource( 15 )]
+editor/display_folded = true
 position = Vector2( -0.875977, 105.198 )
 rotation = -3.1355
 
@@ -456,13 +457,13 @@ texture = ExtResource( 30 )
 texture = ExtResource( 31 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Toy"]
-polygon = PoolVector2Array( -61.7236, -107.108, -77.413, -82.4681, 0.971741, -36.1912, 77.6479, -80.5264, 62.6045, -107.505, 47.0497, -107.346, 46.549, -87.0685, -46.0785, -87.0685, -47.0809, -107.155 )
+polygon = PoolVector2Array( -62.3261, -107.268, -77.413, -82.4681, 0.971741, -36.1912, 77.6479, -80.5264, 62.6045, -107.505, 47.0497, -107.346, 46.549, -87.0685, -46.0785, -87.0685, -47.0809, -107.155 )
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Toy"]
 polygon = PoolVector2Array( -108.383, -26.4852, -31.0042, 15.3159, -32.4759, 106.989, -62.1208, 107.785, -69.6109, 95.4767, -52.8378, 84.9622, -100.153, 3.85052, -116.607, 13.0426, -124.484, -0.654297 )
 
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Toy"]
-polygon = PoolVector2Array( 31.0464, 17.6697, 109.27, -24.771, 124.57, -0.25708, 116.896, 13.1133, 99.1213, 3.60022, 53.0579, 84.2112, 69.831, 95.2263, 61.4128, 108.182, 30.769, 107.267 )
+polygon = PoolVector2Array( 31.0464, 17.6697, 109.27, -24.771, 124.57, -0.25708, 116.896, 13.1133, 99.1213, 3.60022, 53.0579, 84.2112, 69.831, 95.2263, 61.8663, 107.623, 31.4536, 107.43 )
 
 [node name="ToyRollover1" parent="Toy" instance=ExtResource( 16 )]
 position = Vector2( 0.725436, 41.8353 )
@@ -488,7 +489,7 @@ position = Vector2( 0.664673, -97.4904 )
 rotation = 1.57358
 
 [node name="Light" parent="Toy" instance=ExtResource( 10 )]
-position = Vector2( 0.453857, -20.5602 )
+position = Vector2( 0, -17 )
 texture = ExtResource( 33 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Toy"]
