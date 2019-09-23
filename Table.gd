@@ -11,9 +11,7 @@ extends Node
 
 # TODO - FIXES
 
-# Align flippers with kickers
 # Release ball more quickly when starting a timed event?
-# "Failed to get modified time for ...particle.png"
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
 
