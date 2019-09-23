@@ -9,8 +9,8 @@ extends Node
 # More flair for DMD frames
 # Volume for song #3 still seems quieter than SFX volume
 # Improve pixel precision for all collision shapes
-# Color for the toy
-# More impressive sounds/graphics for wizard mode (ball trail, flipper sounds)
+# Sound volume for new sounds
+# Still not thrilled about the shape of the toy light
 
 # TODO - FIXES
 
@@ -78,6 +78,13 @@ const NEEDLE_MAX_VELOCITY = 2000.0
 # timing for certain conditions
 const OUT_TIME = 3.0
 const BONUS_TIME = 5.0
+
+# color values
+const EJECT_IMPACT_COLOR = Color(0.7, 0.7, 1.0)
+const WIZARD_LANE_IMPACT_COLOR = Color(1.0, 0.7, 0.7)
+const KICKER_IMPACT_COLOR = Color(1.0, 1.0, 0.5)
+const BUMPER_IMPACT_COLOR = Color(0.7, 0.7, 1.0)
+const TARGET_IMPACT_COLOR = Color(1.0, 0.5, 1.0)
 
 # values used to track what mode the game is in
 enum {
@@ -293,7 +300,7 @@ func impact(ball, color):
 
 # Common logic for hitting a bumper.
 func bump(ball, bumper, force):
-	impact(ball, Color(0.7, 0.7, 1.0))
+	impact(ball, BUMPER_IMPACT_COLOR)
 	
 	# Apply velocity due to impact from bumper.
 	var from_bumper = ball.get_position() - bumper.get_position()
@@ -317,7 +324,7 @@ func bump(ball, bumper, force):
 # Common logic for hitting a kicker.
 func kick(ball, kicker, force):
 	add_score(SCORE_KICKER)
-	impact(ball, Color(1.0, 1.0, 0.5))
+	impact(ball, KICKER_IMPACT_COLOR)
 
 	"""
 	# Find offset from ball to kicker origin.
@@ -389,6 +396,8 @@ func new_ball(eject = false):
 	if eject:
 		# Sometimes we want to eject the ball automatically.
 		new_ball.set_linear_velocity(BALL_EJECT)
+		if mode == MODE_WIZARD:
+			impact(new_ball, EJECT_IMPACT_COLOR)
 	else:
 		# But if we're not auto-ejecting the ball, we'll set up a skill shot opportunity.
 		choose_skill_gate()
@@ -557,11 +566,12 @@ func check_lane_hunt():
 		change_special()
 
 # If the player hits any lane during wizard mode, give an extra reward.
-func wizard_lane():
+func wizard_lane(active_ball):
 	add_score(SCORE_WIZARD_LANE)
 	$DMD.set_parameter("reward", SCORE_WIZARD_LANE)
 	$DMD.show_once($DMD.DISPLAY_WIZARD_JACKPOT)
 	$AudioStreamPlayer.play_jackpot()
+	impact(active_ball, WIZARD_LANE_IMPACT_COLOR)
 
 # Switch which special reward is lit, in front of the capture lane.
 func change_special():
@@ -596,6 +606,7 @@ func check_wizard_mode():
 func start_wizard_mode():
 	$WizardReadyTimer.stop()
 	$BallSaveTimer.stop()
+	$ZapTimer.start()
 	lit_lane = 0
 	save_lit = false
 	
@@ -683,6 +694,7 @@ func halt_events():
 			clear_all_lights()
 			change_lit_lane(false)
 			$WizardModeTimer.stop()
+			$ZapTimer.stop()
 			$Toy.lower_all_gates()
 			change_special()
 	mode = MODE_NORMAL
@@ -855,17 +867,17 @@ func _on_Bumper3_body_entered(body):
 
 # The following three functions react to hits against the left drop targets.
 func _on_DropTarget1_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget1.drop()
 	left_target_dropped()
 
 func _on_DropTarget2_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget2.drop()
 	left_target_dropped()
 
 func _on_DropTarget3_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget3.drop()
 	left_target_dropped()
 
@@ -893,17 +905,17 @@ func _on_ResetLeftTargets_timeout():
 
 # The following three functions react to hits against the right drop targets.
 func _on_DropTarget4_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget4.drop()
 	right_target_dropped()
 
 func _on_DropTarget5_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget5.drop()
 	right_target_dropped()
 
 func _on_DropTarget6_body_entered(body):
-	impact(body, Color(1.0, 0.5, 1.0))
+	impact(body, TARGET_IMPACT_COLOR)
 	$DropTarget6.drop()
 	right_target_dropped()
 
@@ -963,7 +975,7 @@ func _on_RKicker_body_entered(body):
 # The next five functions run when the ball passes through lanes.
 func _on_Lane1Rollover_rollover_entered(body):
 	if mode == MODE_WIZARD:
-		wizard_lane()
+		wizard_lane(body)
 	elif mode == MODE_LANE_HUNT:
 		if not lane_hunt_1:
 			$LaneLight1.switch_off()
@@ -976,7 +988,7 @@ func _on_Lane1Rollover_rollover_entered(body):
 
 func _on_Lane2Rollover_rollover_entered(body):
 	if mode == MODE_WIZARD:
-		wizard_lane()
+		wizard_lane(body)
 	elif mode == MODE_LANE_HUNT:
 		if not lane_hunt_2:
 			$LaneLight2.switch_off()
@@ -987,7 +999,7 @@ func _on_Lane2Rollover_rollover_entered(body):
 
 func _on_Lane3Rollover_rollover_entered(body):
 	if mode == MODE_WIZARD:
-		wizard_lane()
+		wizard_lane(body)
 	elif mode == MODE_LANE_HUNT:
 		if not lane_hunt_3:
 			$LaneLight3.switch_off()
@@ -1000,13 +1012,13 @@ func _on_Lane3Rollover_rollover_entered(body):
 
 func _on_Lane4Rollover_rollover_entered(body):
 	if mode == MODE_WIZARD:
-		wizard_lane()
+		wizard_lane(body)
 	elif lit_lane == 4:
 		change_lit_lane()
 
 func _on_Lane5Rollover_rollover_entered(body):
 	if mode == MODE_WIZARD:
-		wizard_lane()
+		wizard_lane(body)
 	elif lit_lane == 5:
 		change_lit_lane()
 

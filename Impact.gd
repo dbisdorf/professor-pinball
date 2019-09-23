@@ -24,7 +24,7 @@ func setup(new_color, high_impact = false):
 		set_lifetime(1.0)
 		particle_material.set_param(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
 		particle_material.set_param_randomness(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
-		$AudioStreamPlayer2D.play()
+		$AudioStreamPlayer.play()
 	else:
 		set_amount(64)
 		set_lifetime(0.25)
