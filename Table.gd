@@ -26,8 +26,6 @@ extends Node
 
 # TODO - TESTING
 
-# What happens if you're only missing one victory (bumpers) and you repeat another (lanes)?
-
 const HIGH_SCORE_FILE = "user://high_score"
 
 # screen geometry constants
@@ -202,12 +200,12 @@ func _unhandled_input(event):
 				lane_hunter_victory = true
 				target_hunter_victory = true
 				multiball_victory = true
-				bumper_victory = true
-				bumps = 110
+				#bumper_victory = true
+				#bumps = 110
 				$TargetHuntVictoryLight.switch_on()
 				$LaneHuntVictoryLight.switch_on()
 				$MultiballVictoryLight.switch_on()
-				$BumperVictoryLight.switch_on()
+				#$BumperVictoryLight.switch_on()
 				check_wizard_mode()
 """
 
@@ -753,7 +751,6 @@ func _on_Exit_body_entered(body):
 			$X2Light.switch_off()
 			$X4Light.switch_off()
 			$X8Light.switch_off()
-			multiplier = 1
 			ball += 1
 			
 			# Calculate and display the end-of-ball bonuses.
@@ -774,6 +771,7 @@ func _on_Exit_body_entered(body):
 			$DMD.set_parameter("multiplier", multiplier)
 
 			$DMD.show_and_keep($DMD.DISPLAY_BALL_LOST)
+			multiplier = 1
 			save_next_ball = true
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
