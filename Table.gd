@@ -19,12 +19,7 @@ extends Node
 
 # TODO - POLISH
 
-# Verify no horizontal collision edges from table walls
-# Adjust scores for task difficulty
 # Remove debug code
-# Inspect all debugger warnings/errors
-
-# TODO - TESTING
 
 const HIGH_SCORE_FILE = "user://high_score"
 
