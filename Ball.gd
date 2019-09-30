@@ -10,12 +10,12 @@ const MIN_TRAIL_VELOCITY = 2000.0
 
 # Turn on the particle trail when the ball appears.
 func _ready():
-	$Particles2D.set_emitting(false)
+	$CPUParticles2D.set_emitting(false)
 
 # Turn the particle trail on or off based on ball velocity.
 func _process(delta):
 	var velocity = get_linear_velocity().length()
-	$Particles2D.set_emitting(velocity > MIN_TRAIL_VELOCITY)
+	$CPUParticles2D.set_emitting(velocity > MIN_TRAIL_VELOCITY)
 
 """
 If you're testing a table and you need to put the ball in a specific 

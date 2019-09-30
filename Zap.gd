@@ -1,4 +1,4 @@
-extends Particles2D
+extends CPUParticles2D
 
 var motion = Vector2(2000, 0)
 

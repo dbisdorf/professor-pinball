@@ -1,6 +1,6 @@
 # This code manages a brief particle effect which appears when a ball hits something interesting.
 
-extends Particles2D
+extends CPUParticles2D
 
 # Change the particle color.
 
@@ -17,19 +17,19 @@ extends Particles2D
 # parameters every time, even if we appear to be setting them to the default.
 
 func setup(new_color, high_impact = false):
-	var particle_material = get_process_material()
-	particle_material.set_color(new_color)
+	#var particle_material = get_process_material()
+	set_color(new_color)
 	if high_impact:
 		set_amount(128)
 		set_lifetime(1.0)
-		particle_material.set_param(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
-		particle_material.set_param_randomness(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
+		set_param(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
+		set_param_randomness(ParticlesMaterial.PARAM_HUE_VARIATION, 1.0)
 		$AudioStreamPlayer.play()
 	else:
 		set_amount(64)
 		set_lifetime(0.25)
-		particle_material.set_param(ParticlesMaterial.PARAM_HUE_VARIATION, 0.0)
-		particle_material.set_param_randomness(ParticlesMaterial.PARAM_HUE_VARIATION, 0.0)
+		set_param(ParticlesMaterial.PARAM_HUE_VARIATION, 0.0)
+		set_param_randomness(ParticlesMaterial.PARAM_HUE_VARIATION, 0.0)
 	set_emitting(true)
 	$Timer.start(get_lifetime())
 

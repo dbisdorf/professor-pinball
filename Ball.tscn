@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Ball.gd" type="Script" id=1]
 [ext_resource path="res://graphics/ball.png" type="Texture" id=2]
@@ -10,19 +10,6 @@ bounce = 0.1
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 24.0
-
-[sub_resource type="ParticlesMaterial" id=3]
-flag_align_y = true
-flag_disable_z = true
-spread = 180.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 40.0
-initial_velocity_random = 1.0
-angular_velocity = 3.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-scale = 2.0
-scale_random = 1.0
 
 [node name="Ball" type="RigidBody2D" groups=[
 "balls",
@@ -43,9 +30,16 @@ shape = SubResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
-[node name="Particles2D" type="Particles2D" parent="."]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 amount = 64
 lifetime = 0.5
 local_coords = false
-process_material = SubResource( 3 )
 texture = ExtResource( 3 )
+flag_align_y = true
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 40.0
+initial_velocity_random = 1.0
+angular_velocity = 3.0
+scale_amount = 2.0
+scale_amount_random = 1.0
