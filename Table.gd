@@ -2,19 +2,15 @@
 
 extends Node
 
-# TODO 
-
-# Clamp velocity (max = 4337?)
-# Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
-
+# High score file location
 const HIGH_SCORE_FILE = "user://high_score"
 
-# screen geometry constants
+# Screen geometry constants
 const WINDOW_SIZE = Vector2(896, 2016)
 const BALL_ENTRY = Vector2(834, 1810)
 const BALL_EJECT = Vector2(0, -2000)
 
-# force and other values for bumpers, kickers, nudging
+# Force and other values for bumpers, kickers, nudging
 const RELEASE_FORCE = 750
 const NUDGE_V_FORCE = 300
 const NUDGE_H_FORCE = 300
@@ -22,7 +18,7 @@ const NUDGE_VIEW_OFFSET = 10
 const FORCE_BUMPER = 700.0
 const FORCE_KICKER = 1200.0
 
-# score awards
+# Score awards
 const SCORE_BUMPER = 25
 const SCORE_DROP = 100
 const SCORE_DROP_ALL = 1000
@@ -37,29 +33,29 @@ const SCORE_WIZARD_LANE = 2500
 const SCORE_BONUS = 100
 const SCORE_SKILL_SHOT = 1000
 
-# goals for game events
+# Goals for game events
 const EXTRA_BALL_GOAL = 100000
 const BUMPER_PROGRESS = 10
 const BUMPER_GOAL = 100
 
-# bottom-of-screen needles hit their max when the ball reaches this velocity
+# Bottom-of-screen needles hit their max when the ball reaches this velocity
 const NEEDLE_MAX_VELOCITY = 2000.0
 
-# timing for certain conditions
+# Timing for certain conditions
 const OUT_TIME = 3.0
 const BONUS_TIME = 5.0
 const SLOW_RELEASE_TIME = 4.0
 const COUNTDOWN_LEAD_TIME = 30.0
 const COUNTDOWN_TICK_TIME = 1.0
 
-# color values
+# Color values
 const EJECT_IMPACT_COLOR = Color(0.7, 0.7, 1.0)
 const WIZARD_LANE_IMPACT_COLOR = Color(1.0, 0.7, 0.7)
 const KICKER_IMPACT_COLOR = Color(1.0, 1.0, 0.5)
 const BUMPER_IMPACT_COLOR = Color(0.7, 0.7, 1.0)
 const TARGET_IMPACT_COLOR = Color(1.0, 0.5, 1.0)
 
-# values used to track what mode the game is in
+# Values used to track what mode the game is in
 enum {
 	MODE_ATTRACT,
 	MODE_NORMAL,
@@ -107,7 +103,7 @@ func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
 	
 	# The game starts at a low resolution so the splash screen will look correct.
-	# These lines set us to the correct resolution.
+	# These lines set us to the correct higher resolution.
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, WINDOW_SIZE)
 	OS.set_window_fullscreen(true)
 	
@@ -647,6 +643,7 @@ func halt_events():
 			$LaneLight2.switch_off()
 			$LaneLight3.switch_off()
 			$LaneHuntTimer.stop()
+			$CountdownTimer.stop()
 			change_lit_lane(false)
 			change_special()
 		MODE_TARGET_HUNT:
@@ -657,6 +654,7 @@ func halt_events():
 			$DropTarget5.raise()
 			$DropTarget6.raise()
 			$TargetHuntTimer.stop()
+			$CountdownTimer.stop()
 			$LeftTargetLight.switch_off()
 			$RightTargetLight.switch_off()
 			change_special()
