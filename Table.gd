@@ -2,24 +2,10 @@
 
 extends Node
 
-# TODO - FEATURES
+# TODO 
 
-# Include README/LICENSE in build?
-
-# TODO - GRAPHICS AND SOUND
-
-# Volume for song #3 still seems quieter than SFX volume
-# Sound volume for new sounds
-
-# TODO - FIXES
-
-# Release ball more quickly when starting a timed event?
 # Clamp velocity (max = 4337?)
 # Something Is Up with the collision shape of the left flipper. The ball sort of bumps over this flipper in rest state.
-
-# TODO - POLISH
-
-# Remove debug code
 
 const HIGH_SCORE_FILE = "user://high_score"
 
@@ -62,6 +48,9 @@ const NEEDLE_MAX_VELOCITY = 2000.0
 # timing for certain conditions
 const OUT_TIME = 3.0
 const BONUS_TIME = 5.0
+const SLOW_RELEASE_TIME = 4.0
+const COUNTDOWN_LEAD_TIME = 30.0
+const COUNTDOWN_TICK_TIME = 1.0
 
 # color values
 const EJECT_IMPACT_COLOR = Color(0.7, 0.7, 1.0)
@@ -112,7 +101,7 @@ var target_hunter_victory
 var multiball_victory
 var bumper_victory
 var high_score
-var debug_velocity = 0.0
+var ticks
 
 func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
@@ -173,8 +162,6 @@ func _process(delta):
 	var max_y = 0.0
 	for ball in balls:
 		var ball_velocity = ball.get_linear_velocity()
-		if ball_velocity.length() > debug_velocity:
-			debug_velocity = ball_velocity.length()
 		if abs(ball_velocity.x) > max_x:
 			max_x = abs(ball_velocity.x)
 		if abs(ball_velocity.y) > max_y:
@@ -183,7 +170,7 @@ func _process(delta):
 	$RightNeedle.set_level(max_y / NEEDLE_MAX_VELOCITY)
 
 """
-Uncomment this code to enable special testing controls.
+Uncomment this code to enable special debugging controls.
 The E key toggles which capture lane reward is lit.
 The W key marks all events as complete.
 func _unhandled_input(event):
@@ -195,12 +182,12 @@ func _unhandled_input(event):
 				lane_hunter_victory = true
 				target_hunter_victory = true
 				multiball_victory = true
-				#bumper_victory = true
-				#bumps = 110
+				bumper_victory = true
+				bumps = 110
 				$TargetHuntVictoryLight.switch_on()
 				$LaneHuntVictoryLight.switch_on()
 				$MultiballVictoryLight.switch_on()
-				#$BumperVictoryLight.switch_on()
+				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
 """
 
@@ -771,8 +758,6 @@ func _on_Exit_body_entered(body):
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
 			$BallLostTimer.start(OUT_TIME)
-			print("max velocity = " + str(debug_velocity))
-			debug_velocity = 0.0
 
 # These effects run when the ball enters the capture lane.
 func _on_BallCaptureRight_rollover_entered(body):
@@ -819,8 +804,10 @@ func _on_BallCaptureRight_rollover_entered(body):
 					$LaneLight5.switch_off()
 					$DMD.show_sequence($DMD.LANE_HUNT_SEQ)
 					$SpecialLight2.flash()
-					$BallReleaseRightTimer.start()
+					$BallReleaseRightTimer.start(SLOW_RELEASE_TIME)
 					$LaneHuntTimer.start()
+					$CountdownTimer.start(COUNTDOWN_LEAD_TIME)
+					ticks = 5
 				3:
 					# Reward number 3 is to start the drop target hunt event.
 					mode = MODE_TARGET_HUNT
@@ -834,8 +821,10 @@ func _on_BallCaptureRight_rollover_entered(body):
 					$SpecialLight3.flash()
 					$LeftTargetLight.flash()
 					$RightTargetLight.flash()
-					$BallReleaseRightTimer.start()
+					$BallReleaseRightTimer.start(SLOW_RELEASE_TIME)
 					$TargetHuntTimer.start()
+					$CountdownTimer.start(COUNTDOWN_LEAD_TIME)
+					ticks = 5
 	else:
 		# If there's an event in progress, just release the ball from the capture lane.
 		$BallReleaseRightTimer.start(1.0)
@@ -1029,11 +1018,13 @@ func _on_BallEjectTimer_timeout():
 
 # End the lane hunt when this timer expires.
 func _on_LaneHuntTimer_timeout():
+	$AudioStreamPlayer.play_buzz()
 	$DMD.show_once($DMD.DISPLAY_LANE_HUNT_EXPIRED)
 	halt_events()
 
 # End the drop target hunt when this timer expires.
 func _on_TargetHuntTimer_timeout():
+	$AudioStreamPlayer.play_buzz()
 	$DMD.show_once($DMD.DISPLAY_TARGET_HUNT_EXPIRED)
 	halt_events()
 
@@ -1128,3 +1119,9 @@ func _on_ZapTimer_timeout():
 	new_zap.rotate(rng.randf_range(0.0, 2 * PI))
 	add_child(new_zap)
 	$ZapTimer.start(rng.randf_range(0.0, 0.75))
+
+func _on_CountdownTimer_timeout():
+	$AudioStreamPlayer.play_tick()
+	ticks -= 1
+	if ticks:
+		$CountdownTimer.start(COUNTDOWN_TICK_TIME)

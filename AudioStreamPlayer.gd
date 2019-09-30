@@ -14,6 +14,8 @@ var jackpot_stream = preload("res://sound/jackpot.wav")
 var new_ball_stream = preload("res://sound/new_ball.wav")
 var challenge_stream = preload("res://sound/challenge.wav")
 var wizard_stream = preload("res://sound/wizard.wav")
+var tick_stream = preload("res://sound/tick.wav")
+var buzz_stream = preload("res://sound/buzz.wav")
 
 # This may not be optimal, but it's functional. This script 
 # handles most award and event sounds. I didn't want to 
@@ -66,3 +68,9 @@ func play_challenge():
 
 func play_wizard():
 	conditionally_play(wizard_stream)
+	
+func play_tick():
+	conditionally_play(tick_stream)
+
+func play_buzz():
+	conditionally_play(buzz_stream)

@@ -269,12 +269,12 @@ one_shot = true
 
 [node name="LaneHuntTimer" type="Timer" parent="."]
 pause_mode = 1
-wait_time = 30.0
+wait_time = 35.0
 one_shot = true
 
 [node name="TargetHuntTimer" type="Timer" parent="."]
 pause_mode = 1
-wait_time = 30.0
+wait_time = 35.0
 one_shot = true
 
 [node name="WizardModeTimer" type="Timer" parent="."]
@@ -321,6 +321,9 @@ wait_time = 10.0
 
 [node name="ZapTimer" type="Timer" parent="."]
 wait_time = 0.5
+one_shot = true
+
+[node name="CountdownTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="LaneLight1" parent="." instance=ExtResource( 10 )]
@@ -603,6 +606,7 @@ off_light = Color( 1, 1, 1, 0 )
 [connection signal="timeout" from="WindowTimer" to="." method="_on_WindowTimer_timeout"]
 [connection signal="timeout" from="WizardReadyTimer" to="." method="_on_WizardReadyTimer_timeout"]
 [connection signal="timeout" from="ZapTimer" to="." method="_on_ZapTimer_timeout"]
+[connection signal="timeout" from="CountdownTimer" to="." method="_on_CountdownTimer_timeout"]
 [connection signal="rollover_entered" from="Toy/ToyRollover1" to="." method="_on_ToyRollover1_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover2" to="." method="_on_ToyRollover2_rollover_entered"]
 [connection signal="rollover_entered" from="Toy/ToyRollover3" to="." method="_on_ToyRollover3_rollover_entered"]
