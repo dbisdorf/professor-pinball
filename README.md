@@ -6,4 +6,4 @@ The game is open-source, and the code and license are on GitHub at https://githu
 
 I used the following open-license fonts: the OSP-DIN font, which you can find at http://osp.kitchen/, and Liberation Serif.
 
-Apart from Godot, I used the open-source tools Audacity, Inkscape, and Krita to build this game.
+Apart from Godot, I used the open-source tools Audacity, Inkscape, Krita, and Klystrack to build this game.

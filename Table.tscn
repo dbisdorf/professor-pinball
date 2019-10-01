@@ -426,7 +426,6 @@ rotation = -3.14244
 
 [node name="Toy" type="RigidBody2D" parent="."]
 pause_mode = 1
-editor/display_folded = true
 position = Vector2( 433.266, 982.927 )
 z_index = 10
 mode = 3
