@@ -288,14 +288,17 @@ wait_time = 15.0
 one_shot = true
 
 [node name="NudgeLeftTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 0.1
 one_shot = true
 
 [node name="NudgeRightTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 0.1
 one_shot = true
 
 [node name="NudgeUpTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 0.1
 one_shot = true
 
@@ -305,25 +308,31 @@ wait_time = 3.0
 one_shot = true
 
 [node name="BallLostTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 9.0
 one_shot = true
 
 [node name="SkillShotTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 15.0
 one_shot = true
 
 [node name="WindowTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 10.0
 autostart = true
 
 [node name="WizardReadyTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 10.0
 
 [node name="ZapTimer" type="Timer" parent="."]
+pause_mode = 1
 wait_time = 0.5
 one_shot = true
 
 [node name="CountdownTimer" type="Timer" parent="."]
+pause_mode = 1
 one_shot = true
 
 [node name="LaneLight1" parent="." instance=ExtResource( 10 )]

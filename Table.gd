@@ -169,6 +169,7 @@ func _process(delta):
 Uncomment this code to enable special debugging controls.
 The E key toggles which capture lane reward is lit.
 The W key marks all events as complete.
+"""
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -185,7 +186,6 @@ func _unhandled_input(event):
 				$MultiballVictoryLight.switch_on()
 				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
-"""
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -464,6 +464,7 @@ func check_multiball():
 		$LaneLight3.switch_off()
 		$LaneLight4.switch_off()
 		$LaneLight5.switch_off()
+		turn_off_specials()
 		$Toy.flash()
 		$AudioStreamPlayer.play_challenge()
 	else:
@@ -546,19 +547,36 @@ func wizard_lane(active_ball):
 
 # Switch which special reward is lit, in front of the capture lane.
 func change_special():
+	if mode != MODE_MULTIBALL and mode != MODE_WIZARD:
+		match special_lit:
+			1:
+				special_lit = 2
+				$SpecialLight1.switch_off()
+				$SpecialLight2.switch_on()
+			2:
+				special_lit = 3
+				$SpecialLight2.switch_off()
+				$SpecialLight3.switch_on()
+			3:
+				special_lit = 1
+				$SpecialLight3.switch_off()
+				$SpecialLight1.switch_on()
+
+# Turn off special reward lights.
+func turn_off_specials():
+	$SpecialLight1.switch_off()
+	$SpecialLight2.switch_off()
+	$SpecialLight3.switch_off()
+
+# Turn on special reward lights.
+func turn_on_specials():
 	match special_lit:
 		1:
-			special_lit = 2
-			$SpecialLight1.switch_off()
-			$SpecialLight2.switch_on()
-		2:
-			special_lit = 3
-			$SpecialLight2.switch_off()
-			$SpecialLight3.switch_on()
-		3:
-			special_lit = 1
-			$SpecialLight3.switch_off()
 			$SpecialLight1.switch_on()
+		2:
+			$SpecialLight2.switch_on()
+		3:
+			$SpecialLight3.switch_on()
 
 # Identify whether all events are complete.
 func all_events_complete():
@@ -575,6 +593,7 @@ func check_wizard_mode():
 
 # Start wizard mode.
 func start_wizard_mode():
+	turn_off_specials()
 	$WizardReadyTimer.stop()
 	$BallSaveTimer.stop()
 	$ZapTimer.start()
@@ -587,9 +606,6 @@ func start_wizard_mode():
 	$LaneLight3.flash(0.2)
 	$LaneLight4.flash(0.2)
 	$LaneLight5.flash(0.2)
-	$SpecialLight1.switch_off()
-	$SpecialLight2.switch_off()
-	$SpecialLight3.switch_off()	
 	$TargetHuntVictoryLight.flash(1.0)
 	$LaneHuntVictoryLight.flash(1.0, 2.0)
 	$MultiballVictoryLight.flash(1.0)
@@ -636,6 +652,7 @@ func clear_all_lights():
 func halt_events():
 	match mode:
 		MODE_MULTIBALL:
+			turn_on_specials()
 			$Toy.switch_off()
 			$Toy.lower_all_gates()
 		MODE_LANE_HUNT:
@@ -669,7 +686,7 @@ func halt_events():
 			$WizardModeTimer.stop()
 			$ZapTimer.stop()
 			$Toy.lower_all_gates()
-			change_special()
+			turn_on_specials()
 	mode = MODE_NORMAL
 
 # This function runs multiple times after a game is over.
