@@ -31,6 +31,7 @@ shape = SubResource( 2 )
 texture = ExtResource( 2 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
 amount = 64
 lifetime = 0.5
 local_coords = false

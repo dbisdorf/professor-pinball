@@ -8,10 +8,6 @@ const MIN_VOLUME = -40.0
 const MAX_VOLUME = -20.0
 const MIN_TRAIL_VELOCITY = 2000.0
 
-# Turn on the particle trail when the ball appears.
-func _ready():
-	$CPUParticles2D.set_emitting(false)
-
 # Turn the particle trail on or off based on ball velocity.
 func _process(delta):
 	var velocity = get_linear_velocity().length()
