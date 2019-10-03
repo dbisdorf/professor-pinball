@@ -4,6 +4,7 @@
 [ext_resource path="res://Needle.gd" type="Script" id=2]
 
 [node name="Needle" type="Sprite"]
+pause_mode = 1
 texture = ExtResource( 1 )
 offset = Vector2( -46, 0 )
 script = ExtResource( 2 )
