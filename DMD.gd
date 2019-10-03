@@ -6,6 +6,7 @@ extends Node2D
 const DMD_WIDTH = 128
 const DMD_HEIGHT = 32
 const DMD_RECT = Rect2(-64, -16, 128, 32)
+const BLANK_COLOR = Color(0, 0, 0)
 
 # The display can show code-driven text, or can show pre-drawn bitmaps.
 enum {MODE_GRAPHICS, MODE_TEXT}
@@ -219,6 +220,7 @@ func _ready():
 	font.add_char(KEY_SPACE, 0, Rect2(48, 72, 8, 12))
 
 func _draw():
+	draw_rect(DMD_RECT, BLANK_COLOR, true)
 	if paused:
 		# If the game is paused, just draw the pause text.
 		draw_string(font, Vector2(get_starting_x("PAUSED"), upper_draw.y) , "PAUSED")

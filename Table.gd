@@ -169,7 +169,6 @@ func _process(delta):
 Uncomment this code to enable special debugging controls.
 The E key toggles which capture lane reward is lit.
 The W key marks all events as complete.
-"""
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -186,6 +185,7 @@ func _unhandled_input(event):
 				$MultiballVictoryLight.switch_on()
 				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
+"""
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -1131,9 +1131,8 @@ func _on_WizardReadyTimer_timeout():
 func _on_ZapTimer_timeout():
 	var new_zap = zap_scene.instance()
 	new_zap.set_global_position($Toy.get_global_position())
-	new_zap.rotate(rng.randf_range(0.0, 2 * PI))
-	add_child(new_zap)
-	$ZapTimer.start(rng.randf_range(0.0, 0.75))
+	call_deferred("add_child", new_zap)
+	$ZapTimer.start(rng.randf_range(0.1, 0.75))
 
 func _on_CountdownTimer_timeout():
 	$AudioStreamPlayer.play_tick()

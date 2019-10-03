@@ -5,6 +5,7 @@
 [ext_resource path="res://sound/shock.wav" type="AudioStream" id=3]
 
 [node name="Impact" type="CPUParticles2D"]
+pause_mode = 1
 scale = Vector2( 1.6, 1.6 )
 emitting = false
 amount = 64

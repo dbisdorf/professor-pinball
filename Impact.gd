@@ -17,7 +17,6 @@ extends CPUParticles2D
 # parameters every time, even if we appear to be setting them to the default.
 
 func setup(new_color, high_impact = false):
-	#var particle_material = get_process_material()
 	set_color(new_color)
 	if high_impact:
 		set_amount(128)
