@@ -169,6 +169,7 @@ func _process(delta):
 Uncomment this code to enable special debugging controls.
 The E key toggles which capture lane reward is lit.
 The W key marks all events as complete.
+"""
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -185,7 +186,6 @@ func _unhandled_input(event):
 				$MultiballVictoryLight.switch_on()
 				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
-"""
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -532,7 +532,7 @@ func check_lane_hunt():
 		$AudioStreamPlayer.play_award()
 		$DMD.set_parameter("reward", SCORE_LANE_HUNT)
 		$DMD.show_once($DMD.DISPLAY_LANE_HUNT_REWARD)
-		$LaneHuntTimer.stop()
+		$CountdownTimer.stop()
 		mode = MODE_NORMAL
 		change_lit_lane(false)
 		change_special()
@@ -659,7 +659,6 @@ func halt_events():
 			$LaneLight1.switch_off()
 			$LaneLight2.switch_off()
 			$LaneLight3.switch_off()
-			$LaneHuntTimer.stop()
 			$CountdownTimer.stop()
 			change_lit_lane(false)
 			change_special()
@@ -670,7 +669,6 @@ func halt_events():
 			$DropTarget4.raise()
 			$DropTarget5.raise()
 			$DropTarget6.raise()
-			$TargetHuntTimer.stop()
 			$CountdownTimer.stop()
 			$LeftTargetLight.switch_off()
 			$RightTargetLight.switch_off()
@@ -820,7 +818,6 @@ func _on_BallCaptureRight_rollover_entered(body):
 					$DMD.show_sequence($DMD.LANE_HUNT_SEQ)
 					$SpecialLight2.flash()
 					$BallReleaseRightTimer.start(SLOW_RELEASE_TIME)
-					$LaneHuntTimer.start()
 					$CountdownTimer.start(COUNTDOWN_LEAD_TIME)
 					ticks = 5
 				3:
@@ -837,7 +834,6 @@ func _on_BallCaptureRight_rollover_entered(body):
 					$LeftTargetLight.flash()
 					$RightTargetLight.flash()
 					$BallReleaseRightTimer.start(SLOW_RELEASE_TIME)
-					$TargetHuntTimer.start()
 					$CountdownTimer.start(COUNTDOWN_LEAD_TIME)
 					ticks = 5
 	else:
@@ -940,7 +936,7 @@ func check_target_hunting():
 		$RightTargetLight.switch_off()
 		change_special()
 		mode = MODE_NORMAL
-		$TargetHuntTimer.stop()
+		$CountdownTimer.stop()
 		$ResetLeftTargets.start()
 		$ResetRightTargets.start()
 		check_wizard_mode()
@@ -1030,18 +1026,6 @@ func _on_BallEjectTimer_timeout():
 		balls_queued -= 1
 		if balls_queued > 0:
 			$BallEjectTimer.start(2.0)
-
-# End the lane hunt when this timer expires.
-func _on_LaneHuntTimer_timeout():
-	$AudioStreamPlayer.play_buzz()
-	$DMD.show_once($DMD.DISPLAY_LANE_HUNT_EXPIRED)
-	halt_events()
-
-# End the drop target hunt when this timer expires.
-func _on_TargetHuntTimer_timeout():
-	$AudioStreamPlayer.play_buzz()
-	$DMD.show_once($DMD.DISPLAY_TARGET_HUNT_EXPIRED)
-	halt_events()
 
 # End wizard mode when this timer expires.
 func _on_WizardModeTimer_timeout():
@@ -1135,7 +1119,18 @@ func _on_ZapTimer_timeout():
 	$ZapTimer.start(rng.randf_range(0.1, 0.75))
 
 func _on_CountdownTimer_timeout():
-	$AudioStreamPlayer.play_tick()
-	ticks -= 1
 	if ticks:
 		$CountdownTimer.start(COUNTDOWN_TICK_TIME)
+		$AudioStreamPlayer.play_tick()
+		ticks -= 1
+	else:
+		match mode:
+			MODE_LANE_HUNT:
+				$AudioStreamPlayer.play_buzz()
+				$DMD.show_once($DMD.DISPLAY_LANE_HUNT_EXPIRED)
+				halt_events()
+			MODE_TARGET_HUNT:
+				$AudioStreamPlayer.play_buzz()
+				$DMD.show_once($DMD.DISPLAY_TARGET_HUNT_EXPIRED)
+				halt_events()
+

@@ -53,7 +53,6 @@ pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Walls" type="RigidBody2D" parent="."]
-editor/display_folded = true
 collision_layer = 4
 collision_mask = 2
 mode = 1
@@ -137,28 +136,28 @@ pull_time = 0.75
 release_time = 0.03
 
 [node name="DropTarget1" parent="." instance=ExtResource( 6 )]
-position = Vector2( 58.1261, 1323.65 )
+position = Vector2( 57.3714, 1322.9 )
 rotation = -1.28063
 
 [node name="DropTarget2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 72.6343, 1270.85 )
-rotation = -1.318
+position = Vector2( 73.0117, 1270.1 )
+rotation = -1.28364
 
 [node name="DropTarget3" parent="." instance=ExtResource( 6 )]
-position = Vector2( 86.3568, 1215.86 )
+position = Vector2( 88.6209, 1217.37 )
 rotation = -1.29007
 
 [node name="DropTarget4" parent="." instance=ExtResource( 6 )]
-position = Vector2( 729.818, 1227.86 )
-rotation = 1.2925
+position = Vector2( 731.705, 1225.22 )
+rotation = 1.31065
 
 [node name="DropTarget5" parent="." instance=ExtResource( 6 )]
-position = Vector2( 743.535, 1275.5 )
-rotation = 1.29438
+position = Vector2( 745.044, 1279.27 )
+rotation = 1.29554
 
 [node name="DropTarget6" parent="." instance=ExtResource( 6 )]
-position = Vector2( 756.729, 1323.68 )
-rotation = 1.28188
+position = Vector2( 759.37, 1333.49 )
+rotation = 1.32235
 
 [node name="LKicker" parent="." instance=ExtResource( 7 )]
 position = Vector2( 171.288, 1638.13 )
@@ -265,16 +264,6 @@ one_shot = true
 
 [node name="BallEjectTimer" type="Timer" parent="."]
 pause_mode = 1
-one_shot = true
-
-[node name="LaneHuntTimer" type="Timer" parent="."]
-pause_mode = 1
-wait_time = 35.0
-one_shot = true
-
-[node name="TargetHuntTimer" type="Timer" parent="."]
-pause_mode = 1
-wait_time = 35.0
 one_shot = true
 
 [node name="WizardModeTimer" type="Timer" parent="."]
@@ -602,8 +591,6 @@ off_light = Color( 1, 1, 1, 0 )
 [connection signal="timeout" from="ResetRightTargets" to="." method="_on_ResetRightTargets_timeout"]
 [connection signal="timeout" from="BallReleaseRightTimer" to="." method="_on_BallReleaseRightTimer_timeout"]
 [connection signal="timeout" from="BallEjectTimer" to="." method="_on_BallEjectTimer_timeout"]
-[connection signal="timeout" from="LaneHuntTimer" to="." method="_on_LaneHuntTimer_timeout"]
-[connection signal="timeout" from="TargetHuntTimer" to="." method="_on_TargetHuntTimer_timeout"]
 [connection signal="timeout" from="WizardModeTimer" to="." method="_on_WizardModeTimer_timeout"]
 [connection signal="timeout" from="BallSaveTimer" to="." method="_on_BallSaveTimer_timeout"]
 [connection signal="timeout" from="NudgeLeftTimer" to="." method="_on_NudgeLeftTimer_timeout"]
