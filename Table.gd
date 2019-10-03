@@ -169,7 +169,6 @@ func _process(delta):
 Uncomment this code to enable special debugging controls.
 The E key toggles which capture lane reward is lit.
 The W key marks all events as complete.
-"""
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -186,6 +185,7 @@ func _unhandled_input(event):
 				$MultiballVictoryLight.switch_on()
 				$BumperVictoryLight.switch_on()
 				check_wizard_mode()
+"""
 
 # Set up the between-game attract mode effects.
 func attract(startup = false):
@@ -1015,7 +1015,7 @@ func _on_BallReleaseRightTimer_timeout():
 	var new_ball = ball_scene.instance()
 	new_ball.set_global_position($BallCaptureRight.get_global_position())
 	new_ball.set_linear_velocity(Vector2.DOWN.rotated($BallCaptureRight.get_rotation()) * RELEASE_FORCE)
-	add_child(new_ball)
+	call_deferred("add_child", new_ball)
 	$AudioStreamPlayer.play_eject()
 
 # When this timer expires, forcefully eject the ball from the plunger lane.
