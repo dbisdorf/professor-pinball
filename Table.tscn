@@ -3,30 +3,30 @@
 [ext_resource path="res://Table.gd" type="Script" id=1]
 [ext_resource path="res://graphics/table.png" type="Texture" id=2]
 [ext_resource path="res://Bumper.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Flipper.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Plunger.tscn" type="PackedScene" id=5]
-[ext_resource path="res://DropTarget.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Kicker.tscn" type="PackedScene" id=7]
-[ext_resource path="res://graphics/dmd-moire.png" type="Texture" id=8]
-[ext_resource path="res://DMD.gd" type="Script" id=9]
-[ext_resource path="res://Light.tscn" type="PackedScene" id=10]
-[ext_resource path="res://graphics/save-light.png" type="Texture" id=11]
-[ext_resource path="res://graphics/special-multiplier-light.png" type="Texture" id=12]
-[ext_resource path="res://graphics/special-lane-hunt-light.png" type="Texture" id=13]
-[ext_resource path="res://graphics/special-target-hunt-light.png" type="Texture" id=14]
-[ext_resource path="res://Gate.tscn" type="PackedScene" id=15]
-[ext_resource path="res://Rollover.tscn" type="PackedScene" id=16]
-[ext_resource path="res://graphics/lane-light.png" type="Texture" id=17]
-[ext_resource path="res://graphics/victory-lane-hunt-light.png" type="Texture" id=18]
-[ext_resource path="res://graphics/victory-target-hunt-light.png" type="Texture" id=19]
-[ext_resource path="res://graphics/victory-multiball-light.png" type="Texture" id=20]
-[ext_resource path="res://graphics/victory-bumpers-light.png" type="Texture" id=21]
-[ext_resource path="res://graphics/target-light.png" type="Texture" id=22]
-[ext_resource path="res://graphics/x2-light.png" type="Texture" id=23]
-[ext_resource path="res://graphics/x4-light.png" type="Texture" id=24]
-[ext_resource path="res://graphics/x8-light.png" type="Texture" id=25]
-[ext_resource path="res://AudioStreamPlayer.gd" type="Script" id=26]
-[ext_resource path="res://graphics/bumper-light.png" type="Texture" id=27]
+[ext_resource path="res://Light.tscn" type="PackedScene" id=4]
+[ext_resource path="res://graphics/bumper-light.png" type="Texture" id=5]
+[ext_resource path="res://Flipper.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Plunger.tscn" type="PackedScene" id=7]
+[ext_resource path="res://DropTarget.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Kicker.tscn" type="PackedScene" id=9]
+[ext_resource path="res://graphics/dmd-moire.png" type="Texture" id=10]
+[ext_resource path="res://DMD.gd" type="Script" id=11]
+[ext_resource path="res://graphics/save-light.png" type="Texture" id=12]
+[ext_resource path="res://graphics/special-multiplier-light.png" type="Texture" id=13]
+[ext_resource path="res://graphics/special-lane-hunt-light.png" type="Texture" id=14]
+[ext_resource path="res://graphics/special-target-hunt-light.png" type="Texture" id=15]
+[ext_resource path="res://Gate.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Rollover.tscn" type="PackedScene" id=17]
+[ext_resource path="res://graphics/lane-light.png" type="Texture" id=18]
+[ext_resource path="res://graphics/victory-lane-hunt-light.png" type="Texture" id=19]
+[ext_resource path="res://graphics/victory-target-hunt-light.png" type="Texture" id=20]
+[ext_resource path="res://graphics/victory-multiball-light.png" type="Texture" id=21]
+[ext_resource path="res://graphics/victory-bumpers-light.png" type="Texture" id=22]
+[ext_resource path="res://graphics/target-light.png" type="Texture" id=23]
+[ext_resource path="res://graphics/x2-light.png" type="Texture" id=24]
+[ext_resource path="res://graphics/x4-light.png" type="Texture" id=25]
+[ext_resource path="res://graphics/x8-light.png" type="Texture" id=26]
+[ext_resource path="res://AudioStreamPlayer.gd" type="Script" id=27]
 [ext_resource path="res://graphics/kicker-light.png" type="Texture" id=28]
 [ext_resource path="res://Toy.gd" type="Script" id=29]
 [ext_resource path="res://graphics/toy-gate.png" type="Texture" id=30]
@@ -42,7 +42,7 @@
 [ext_resource path="res://graphics/window-light.png" type="Texture" id=40]
 
 [sub_resource type="PhysicsMaterial" id=1]
-bounce = 0.2
+bounce = 0.28
 
 [sub_resource type="SegmentShape2D" id=2]
 a = Vector2( -150, 0 )
@@ -53,7 +53,6 @@ pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Walls" type="RigidBody2D" parent="."]
-editor/display_folded = true
 collision_layer = 4
 collision_mask = 2
 mode = 1
@@ -101,27 +100,39 @@ __meta__ = {
 [node name="Bumper1" parent="." instance=ExtResource( 3 )]
 position = Vector2( 388.797, 588.562 )
 
+[node name="Light" parent="Bumper1" instance=ExtResource( 4 )]
+position = Vector2( -0.337982, -0.470032 )
+texture = ExtResource( 5 )
+
 [node name="Bumper2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 467.409, 718.163 )
+
+[node name="Light" parent="Bumper2" instance=ExtResource( 4 )]
+position = Vector2( -0.177002, -0.477051 )
+texture = ExtResource( 5 )
 
 [node name="Bumper3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 544.812, 589.685 )
 
-[node name="LFlipper" parent="." instance=ExtResource( 4 )]
-position = Vector2( 233.5, 1884 )
+[node name="Light" parent="Bumper3" instance=ExtResource( 4 )]
+position = Vector2( -0.346008, -0.83197 )
+texture = ExtResource( 5 )
+
+[node name="LFlipper" parent="." instance=ExtResource( 6 )]
+position = Vector2( 229.5, 1884 )
 rotation = 0.523599
 z_index = 1
 keycode = "ui_left_flip"
 snap_time = 0.05
-snap_angle = -65
+snap_angle = -47
 
-[node name="RFlipper" parent="." instance=ExtResource( 4 )]
-position = Vector2( 579.3, 1884 )
+[node name="RFlipper" parent="." instance=ExtResource( 6 )]
+position = Vector2( 583.5, 1884 )
 rotation = 2.61799
 z_index = 1
 keycode = "ui_right_flip"
 snap_time = 0.05
-snap_angle = 65
+snap_angle = 47
 
 [node name="Exit" type="Area2D" parent="."]
 editor/display_folded = true
@@ -130,48 +141,48 @@ position = Vector2( 401.177, 2012.74 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 shape = SubResource( 2 )
 
-[node name="Plunger" parent="." instance=ExtResource( 5 )]
+[node name="Plunger" parent="." instance=ExtResource( 7 )]
 position = Vector2( 834.25, 1872.17 )
 full_extension = 60
 pull_time = 0.75
 release_time = 0.03
 
-[node name="DropTarget1" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget1" parent="." instance=ExtResource( 8 )]
 position = Vector2( 57.3714, 1322.9 )
 rotation = -1.28063
 
-[node name="DropTarget2" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget2" parent="." instance=ExtResource( 8 )]
 position = Vector2( 73.0117, 1270.1 )
 rotation = -1.28364
 
-[node name="DropTarget3" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget3" parent="." instance=ExtResource( 8 )]
 position = Vector2( 88.6209, 1217.37 )
 rotation = -1.29007
 
-[node name="DropTarget4" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget4" parent="." instance=ExtResource( 8 )]
 position = Vector2( 731.705, 1225.22 )
 rotation = 1.31065
 
-[node name="DropTarget5" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget5" parent="." instance=ExtResource( 8 )]
 position = Vector2( 745.044, 1279.27 )
 rotation = 1.29554
 
-[node name="DropTarget6" parent="." instance=ExtResource( 6 )]
+[node name="DropTarget6" parent="." instance=ExtResource( 8 )]
 position = Vector2( 759.37, 1333.49 )
 rotation = 1.32235
 
-[node name="LKicker" parent="." instance=ExtResource( 7 )]
+[node name="LKicker" parent="." instance=ExtResource( 9 )]
 position = Vector2( 171.288, 1638.13 )
 rotation = -0.393051
 
-[node name="RKicker" parent="." instance=ExtResource( 7 )]
+[node name="RKicker" parent="." instance=ExtResource( 9 )]
 position = Vector2( 641.476, 1633.01 )
 rotation = -2.754
 
 [node name="DMDMoire" type="Sprite" parent="."]
 position = Vector2( 3.05176e-005, 7.62939e-006 )
 z_index = 10
-texture = ExtResource( 8 )
+texture = ExtResource( 10 )
 offset = Vector2( 448, 112 )
 region_enabled = true
 region_rect = Rect2( -448, -112, 896, 224 )
@@ -182,70 +193,70 @@ editor/display_folded = true
 position = Vector2( 448, 112 )
 scale = Vector2( 7, 7 )
 z_index = 5
-script = ExtResource( 9 )
+script = ExtResource( 11 )
 
 [node name="DMDTimer" type="Timer" parent="DMD"]
 
-[node name="SaveLight" parent="." instance=ExtResource( 10 )]
+[node name="SaveLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 406.144, 1789.85 )
 scale = Vector2( 0.98, 0.95 )
-texture = ExtResource( 11 )
+texture = ExtResource( 12 )
 
-[node name="SpecialLight1" parent="." instance=ExtResource( 10 )]
+[node name="SpecialLight1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 747.409, 1004.33 )
 rotation = 0.342578
 scale = Vector2( 0.668, 0.668 )
-texture = ExtResource( 12 )
+texture = ExtResource( 13 )
 
-[node name="SpecialLight2" parent="." instance=ExtResource( 10 )]
+[node name="SpecialLight2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 732.977, 1046.61 )
 rotation = 0.329934
 scale = Vector2( 0.668, 0.668 )
-texture = ExtResource( 13 )
+texture = ExtResource( 14 )
 
-[node name="SpecialLight3" parent="." instance=ExtResource( 10 )]
+[node name="SpecialLight3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 718.834, 1088.17 )
 rotation = 0.332302
 scale = Vector2( 0.66777, 0.66777 )
-texture = ExtResource( 14 )
+texture = ExtResource( 15 )
 
-[node name="EntryGate1" parent="." instance=ExtResource( 15 )]
+[node name="EntryGate1" parent="." instance=ExtResource( 16 )]
 position = Vector2( 199.209, 375.969 )
 rotation = 2.61917
 
-[node name="EntryGate2" parent="." instance=ExtResource( 15 )]
+[node name="EntryGate2" parent="." instance=ExtResource( 16 )]
 position = Vector2( 537.891, 322.178 )
 rotation = 3.28975
 
-[node name="EntryGate3" parent="." instance=ExtResource( 15 )]
+[node name="EntryGate3" parent="." instance=ExtResource( 16 )]
 position = Vector2( 618.378, 345.196 )
 rotation = 3.53534
 
-[node name="EntryGate4" parent="." instance=ExtResource( 15 )]
+[node name="EntryGate4" parent="." instance=ExtResource( 16 )]
 position = Vector2( 692.202, 386.801 )
 rotation = 3.80092
 
-[node name="Lane1Rollover" parent="." instance=ExtResource( 16 )]
+[node name="Lane1Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 397.191, 345.404 )
 rotation = 1.47714
 
-[node name="Lane2Rollover" parent="." instance=ExtResource( 16 )]
+[node name="Lane2Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 364.847, 432.891 )
 rotation = 1.36104
 
-[node name="Lane3Rollover" parent="." instance=ExtResource( 16 )]
+[node name="Lane3Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 321.454, 357.922 )
 rotation = -1.90656
 
-[node name="Lane4Rollover" parent="." instance=ExtResource( 16 )]
+[node name="Lane4Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 66.5405, 1580.75 )
 rotation = 3.14159
 
-[node name="Lane5Rollover" parent="." instance=ExtResource( 16 )]
+[node name="Lane5Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 747.092, 1580.73 )
 rotation = 3.14159
 
-[node name="BallCaptureRight" parent="." instance=ExtResource( 16 )]
+[node name="BallCaptureRight" parent="." instance=ExtResource( 17 )]
 position = Vector2( 754.911, 979.498 )
 rotation = 0.334455
 
@@ -326,102 +337,90 @@ one_shot = true
 pause_mode = 1
 one_shot = true
 
-[node name="LaneLight1" parent="." instance=ExtResource( 10 )]
+[node name="LaneLight1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 117.935, 998.914 )
 rotation = 2.77732
-texture = ExtResource( 17 )
-
-[node name="LaneLight2" parent="." instance=ExtResource( 10 )]
-position = Vector2( 242.529, 947.947 )
-rotation = 2.95837
-texture = ExtResource( 17 )
-
-[node name="LaneLight3" parent="." instance=ExtResource( 10 )]
-position = Vector2( 681.193, 797.92 )
-rotation = -2.7529
-texture = ExtResource( 17 )
-
-[node name="LaneLight4" parent="." instance=ExtResource( 10 )]
-position = Vector2( 66.6574, 1615.9 )
-texture = ExtResource( 17 )
-
-[node name="LaneLight5" parent="." instance=ExtResource( 10 )]
-position = Vector2( 747.272, 1615.87 )
-texture = ExtResource( 17 )
-
-[node name="LaneHuntVictoryLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 337.008, 1376.51 )
-rotation = 0.193108
 texture = ExtResource( 18 )
 
-[node name="TargetHuntVictoryLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 213.858, 1403.01 )
+[node name="LaneLight2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 242.529, 947.947 )
+rotation = 2.95837
+texture = ExtResource( 18 )
+
+[node name="LaneLight3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 681.193, 797.92 )
+rotation = -2.7529
+texture = ExtResource( 18 )
+
+[node name="LaneLight4" parent="." instance=ExtResource( 4 )]
+position = Vector2( 66.6574, 1615.9 )
+texture = ExtResource( 18 )
+
+[node name="LaneLight5" parent="." instance=ExtResource( 4 )]
+position = Vector2( 747.272, 1615.87 )
+texture = ExtResource( 18 )
+
+[node name="LaneHuntVictoryLight" parent="." instance=ExtResource( 4 )]
+position = Vector2( 337.008, 1376.51 )
+rotation = 0.193108
 texture = ExtResource( 19 )
 
-[node name="MultiballVictoryLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 462.856, 1375.73 )
-rotation = 0.393895
+[node name="TargetHuntVictoryLight" parent="." instance=ExtResource( 4 )]
+position = Vector2( 213.858, 1403.01 )
 texture = ExtResource( 20 )
 
-[node name="BumperVictoryLight" parent="." instance=ExtResource( 10 )]
-position = Vector2( 587.482, 1400.97 )
-rotation = 0.594814
+[node name="MultiballVictoryLight" parent="." instance=ExtResource( 4 )]
+position = Vector2( 462.856, 1375.73 )
+rotation = 0.393895
 texture = ExtResource( 21 )
 
-[node name="LeftTargetLight" parent="." instance=ExtResource( 10 )]
+[node name="BumperVictoryLight" parent="." instance=ExtResource( 4 )]
+position = Vector2( 587.482, 1400.97 )
+rotation = 0.594814
+texture = ExtResource( 22 )
+
+[node name="LeftTargetLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 99.7473, 1277.05 )
 rotation = -1.31643
 scale = Vector2( 1.01, 1.01 )
-texture = ExtResource( 22 )
+texture = ExtResource( 23 )
 
-[node name="RightTargetLight" parent="." instance=ExtResource( 10 )]
+[node name="RightTargetLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 713.679, 1288.04 )
 rotation = 1.30676
 scale = Vector2( 1.01, 1.01 )
-texture = ExtResource( 22 )
-
-[node name="X2Light" parent="." instance=ExtResource( 10 )]
-position = Vector2( 299.185, 1617.12 )
-rotation = -0.294188
 texture = ExtResource( 23 )
 
-[node name="X4Light" parent="." instance=ExtResource( 10 )]
-position = Vector2( 405.279, 1601.72 )
+[node name="X2Light" parent="." instance=ExtResource( 4 )]
+position = Vector2( 299.185, 1617.12 )
+rotation = -0.294188
 texture = ExtResource( 24 )
 
-[node name="X8Light" parent="." instance=ExtResource( 10 )]
+[node name="X4Light" parent="." instance=ExtResource( 4 )]
+position = Vector2( 405.279, 1601.72 )
+texture = ExtResource( 25 )
+
+[node name="X8Light" parent="." instance=ExtResource( 4 )]
 position = Vector2( 512.125, 1617.3 )
 rotation = 0.280459
-texture = ExtResource( 25 )
+texture = ExtResource( 26 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 pause_mode = 1
-script = ExtResource( 26 )
+script = ExtResource( 27 )
 
-[node name="BumperLight1" parent="." instance=ExtResource( 10 )]
-position = Vector2( 388.459, 588.092 )
-texture = ExtResource( 27 )
-
-[node name="BumperLight2" parent="." instance=ExtResource( 10 )]
-position = Vector2( 467.232, 717.686 )
-texture = ExtResource( 27 )
-
-[node name="BumperLight3" parent="." instance=ExtResource( 10 )]
-position = Vector2( 544.466, 588.853 )
-texture = ExtResource( 27 )
-
-[node name="LeftKickerLight" parent="." instance=ExtResource( 10 )]
+[node name="LeftKickerLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 157.317, 1637 )
 rotation = 0.0385366
 texture = ExtResource( 28 )
 
-[node name="RightKickerLight" parent="." instance=ExtResource( 10 )]
+[node name="RightKickerLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 654.279, 1637 )
 rotation = -0.0440311
 scale = Vector2( -1, 1 )
 texture = ExtResource( 28 )
 
-[node name="BumperGate" parent="." instance=ExtResource( 15 )]
+[node name="BumperGate" parent="." instance=ExtResource( 16 )]
 position = Vector2( 477.528, 467.107 )
 rotation = -3.14244
 
@@ -433,7 +432,7 @@ z_index = 10
 mode = 3
 script = ExtResource( 29 )
 
-[node name="ToyGate1" parent="Toy" instance=ExtResource( 15 )]
+[node name="ToyGate1" parent="Toy" instance=ExtResource( 16 )]
 editor/display_folded = true
 position = Vector2( -0.875977, 105.198 )
 rotation = -3.1355
@@ -442,7 +441,7 @@ rotation = -3.1355
 position = Vector2( -1.08533, 27.8723 )
 texture = ExtResource( 30 )
 
-[node name="ToyGate2" parent="Toy" instance=ExtResource( 15 )]
+[node name="ToyGate2" parent="Toy" instance=ExtResource( 16 )]
 editor/display_folded = true
 position = Vector2( -90.8888, -53.5332 )
 rotation = -1.07181
@@ -451,7 +450,7 @@ rotation = -1.07181
 position = Vector2( 0.281067, 28.466 )
 texture = ExtResource( 30 )
 
-[node name="ToyGate3" parent="Toy" instance=ExtResource( 15 )]
+[node name="ToyGate3" parent="Toy" instance=ExtResource( 16 )]
 editor/display_folded = true
 position = Vector2( 90.8636, -52.4578 )
 rotation = 1.0348
@@ -472,14 +471,14 @@ polygon = PoolVector2Array( -108.383, -26.4852, -31.0042, 15.3159, -32.4759, 106
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Toy"]
 polygon = PoolVector2Array( 31.0464, 17.6697, 109.27, -24.771, 124.57, -0.25708, 116.896, 13.1133, 99.1213, 3.60022, 53.0579, 84.2112, 69.831, 95.2263, 61.8663, 107.623, 31.4536, 107.43 )
 
-[node name="ToyRollover1" parent="Toy" instance=ExtResource( 16 )]
+[node name="ToyRollover1" parent="Toy" instance=ExtResource( 17 )]
 position = Vector2( 0.725436, 41.8353 )
 
-[node name="ToyRollover2" parent="Toy" instance=ExtResource( 16 )]
+[node name="ToyRollover2" parent="Toy" instance=ExtResource( 17 )]
 position = Vector2( -36.3636, -22.2915 )
 rotation = 2.0944
 
-[node name="ToyRollover3" parent="Toy" instance=ExtResource( 16 )]
+[node name="ToyRollover3" parent="Toy" instance=ExtResource( 17 )]
 position = Vector2( 36.7086, -19.9957 )
 rotation = 4.18879
 
@@ -495,7 +494,7 @@ rotation = 0.528317
 position = Vector2( 0.664673, -97.4904 )
 rotation = 1.57358
 
-[node name="Light" parent="Toy" instance=ExtResource( 10 )]
+[node name="Light" parent="Toy" instance=ExtResource( 4 )]
 position = Vector2( 0, -17 )
 texture = ExtResource( 33 )
 
@@ -531,42 +530,42 @@ position = Vector2( 127.618, 1978.87 )
 [node name="RightNeedle" parent="." instance=ExtResource( 37 )]
 position = Vector2( 681.153, 1979.19 )
 
-[node name="SkillLight1" parent="." instance=ExtResource( 10 )]
+[node name="SkillLight1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 541.562, 308.776 )
 rotation = 0.0971276
 texture = ExtResource( 38 )
 
-[node name="SkillLight2" parent="." instance=ExtResource( 10 )]
+[node name="SkillLight2" parent="." instance=ExtResource( 4 )]
 position = Vector2( 623.935, 326.799 )
 rotation = 0.32827
 texture = ExtResource( 38 )
 
-[node name="SkillLight3" parent="." instance=ExtResource( 10 )]
+[node name="SkillLight3" parent="." instance=ExtResource( 4 )]
 position = Vector2( 700.828, 363.96 )
 rotation = 0.552303
 texture = ExtResource( 38 )
 
-[node name="SkillRollover1" parent="." instance=ExtResource( 16 )]
+[node name="SkillRollover1" parent="." instance=ExtResource( 17 )]
 position = Vector2( 540.935, 306.602 )
 rotation = -3.02082
 
-[node name="SkillRollover2" parent="." instance=ExtResource( 16 )]
+[node name="SkillRollover2" parent="." instance=ExtResource( 17 )]
 position = Vector2( 626.367, 324.057 )
 rotation = 3.49737
 
-[node name="SkillRollover3" parent="." instance=ExtResource( 16 )]
+[node name="SkillRollover3" parent="." instance=ExtResource( 17 )]
 position = Vector2( 701.243, 363.376 )
 rotation = 3.73256
 
-[node name="NoSkillRollover" parent="." instance=ExtResource( 16 )]
+[node name="NoSkillRollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 207.867, 340.564 )
 rotation = -3.02082
 
-[node name="LoopLight" parent="." instance=ExtResource( 10 )]
+[node name="LoopLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 375.157, 348.503 )
 texture = ExtResource( 39 )
 
-[node name="WindowLight" parent="." instance=ExtResource( 10 )]
+[node name="WindowLight" parent="." instance=ExtResource( 4 )]
 position = Vector2( 89.6209, 327.201 )
 scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 40 )

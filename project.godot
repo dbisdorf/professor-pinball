@@ -167,7 +167,7 @@ ui_help={
 
 [physics]
 
-common/physics_fps=180
+common/physics_fps=240
 2d/default_gravity=1000
 2d/default_linear_damp=0.0
 

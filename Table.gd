@@ -216,9 +216,9 @@ func attract(startup = false):
 	$X4Light.flash(3.0, 2.0)
 	$X8Light.flash(3.0)
 	$SaveLight.flash(3.0)
-	$BumperLight1.flash(3.0, 1.0)
-	$BumperLight2.flash(3.0, 2.0)
-	$BumperLight3.flash(3.0)
+	$Bumper1.get_node("Light").flash(3.0, 1.0)
+	$Bumper2.get_node("Light").flash(3.0, 2.0)
+	$Bumper3.get_node("Light").flash(3.0)
 	$LeftKickerLight.flash(3.0, 1.5)
 	$RightKickerLight.flash(3.0)
 	$SkillLight1.flash(3.0, 1.0)
@@ -639,9 +639,9 @@ func clear_all_lights():
 	$RightTargetLight.switch_off()
 	$SaveLight.switch_off()
 	$Toy.switch_off()
-	$BumperLight1.switch_off()
-	$BumperLight2.switch_off()
-	$BumperLight3.switch_off()
+	$Bumper1.get_node("Light").switch_off()
+	$Bumper2.get_node("Light").switch_off()
+	$Bumper3.get_node("Light").switch_off()
 	$LeftKickerLight.switch_off()
 	$RightKickerLight.switch_off()
 	$SkillLight1.switch_off()
@@ -842,15 +842,15 @@ func _on_BallCaptureRight_rollover_entered(body):
 
 # The following three functions react to hits against the three bumpers.
 func _on_Bumper1_body_entered(body):
-	$BumperLight1.flash_once()
+	$Bumper1.get_node("Light").flash_once()
 	bump(body, $Bumper1, FORCE_BUMPER)
 
 func _on_Bumper2_body_entered(body):
-	$BumperLight2.flash_once()
+	$Bumper2.get_node("Light").flash_once()
 	bump(body, $Bumper2, FORCE_BUMPER)
 
 func _on_Bumper3_body_entered(body):
-	$BumperLight3.flash_once()
+	$Bumper3.get_node("Light").flash_once()
 	bump(body, $Bumper3, FORCE_BUMPER)
 
 # The following three functions react to hits against the left drop targets.
