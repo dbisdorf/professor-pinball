@@ -13,7 +13,7 @@ export var keycode = "ui_left"
 export var snap_time = 0.25
 
 # The flipper's arc is this big, in degrees.
-export var snap_angle = 90
+export var snap_angle = 50
 
 var intermediate_time = 0.0
 
