@@ -135,7 +135,6 @@ snap_time = 0.05
 snap_angle = 47
 
 [node name="Exit" type="Area2D" parent="."]
-editor/display_folded = true
 position = Vector2( 401.177, 2012.74 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
@@ -180,7 +179,7 @@ position = Vector2( 641.476, 1633.01 )
 rotation = -2.754
 
 [node name="DMDMoire" type="Sprite" parent="."]
-position = Vector2( 3.05176e-005, 7.62939e-006 )
+position = Vector2( 3.05176e-05, 7.62939e-06 )
 z_index = 10
 texture = ExtResource( 10 )
 offset = Vector2( 448, 112 )
@@ -189,7 +188,6 @@ region_rect = Rect2( -448, -112, 896, 224 )
 
 [node name="DMD" type="Node2D" parent="."]
 pause_mode = 1
-editor/display_folded = true
 position = Vector2( 448, 112 )
 scale = Vector2( 7, 7 )
 z_index = 5
@@ -426,14 +424,12 @@ rotation = -3.14244
 
 [node name="Toy" type="RigidBody2D" parent="."]
 pause_mode = 1
-editor/display_folded = true
 position = Vector2( 433.266, 982.927 )
 z_index = 10
 mode = 3
 script = ExtResource( 29 )
 
 [node name="ToyGate1" parent="Toy" instance=ExtResource( 16 )]
-editor/display_folded = true
 position = Vector2( -0.875977, 105.198 )
 rotation = -3.1355
 
@@ -442,7 +438,6 @@ position = Vector2( -1.08533, 27.8723 )
 texture = ExtResource( 30 )
 
 [node name="ToyGate2" parent="Toy" instance=ExtResource( 16 )]
-editor/display_folded = true
 position = Vector2( -90.8888, -53.5332 )
 rotation = -1.07181
 
@@ -451,7 +446,6 @@ position = Vector2( 0.281067, 28.466 )
 texture = ExtResource( 30 )
 
 [node name="ToyGate3" parent="Toy" instance=ExtResource( 16 )]
-editor/display_folded = true
 position = Vector2( 90.8636, -52.4578 )
 rotation = 1.0348
 
@@ -570,6 +564,7 @@ position = Vector2( 89.6209, 327.201 )
 scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 40 )
 off_light = Color( 1, 1, 1, 0 )
+
 [connection signal="body_entered" from="Bumper1" to="." method="_on_Bumper1_body_entered"]
 [connection signal="body_entered" from="Bumper2" to="." method="_on_Bumper2_body_entered"]
 [connection signal="body_entered" from="Bumper3" to="." method="_on_Bumper3_body_entered"]
