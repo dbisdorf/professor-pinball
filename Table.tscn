@@ -234,6 +234,10 @@ rotation = 3.53534
 position = Vector2( 692.202, 386.801 )
 rotation = 3.80092
 
+[node name="EntryGate5" parent="." instance=ExtResource( 16 )]
+position = Vector2( 754, 340 )
+rotation = 5.20961
+
 [node name="Lane1Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 397.191, 345.404 )
 rotation = 1.47714
@@ -564,6 +568,10 @@ position = Vector2( 89.6209, 327.201 )
 scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 40 )
 off_light = Color( 1, 1, 1, 0 )
+
+[node name="PlayRollover" parent="." instance=ExtResource( 17 )]
+position = Vector2( 747, 337 )
+rotation = 2.1622
 
 [connection signal="body_entered" from="Bumper1" to="." method="_on_Bumper1_body_entered"]
 [connection signal="body_entered" from="Bumper2" to="." method="_on_Bumper2_body_entered"]
