@@ -180,7 +180,7 @@ position = Vector2( 641.476, 1633.01 )
 rotation = -2.754
 
 [node name="DMDMoire" type="Sprite" parent="."]
-position = Vector2( 1412, 1588 )
+position = Vector2( -4, 1 )
 z_index = 10
 texture = ExtResource( 10 )
 offset = Vector2( 448, 112 )
@@ -189,7 +189,7 @@ region_rect = Rect2( -448, -112, 896, 224 )
 
 [node name="DMD" type="Node2D" parent="."]
 pause_mode = 1
-position = Vector2( 1882, 1691 )
+position = Vector2( 451, 102 )
 scale = Vector2( 7, 7 )
 z_index = 5
 script = ExtResource( 11 )
@@ -567,7 +567,7 @@ texture = ExtResource( 40 )
 off_light = Color( 1, 1, 1, 0 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 1901, 1107 )
+position = Vector2( 1882, 1114 )
 scale = Vector2( 1.9107, 1.9107 )
 texture = ExtResource( 41 )
 
