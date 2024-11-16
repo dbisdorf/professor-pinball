@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Table.gd" type="Script" id=1]
 [ext_resource path="res://graphics/table.png" type="Texture" id=2]
@@ -40,6 +40,7 @@
 [ext_resource path="res://graphics/skill-light.png" type="Texture" id=38]
 [ext_resource path="res://graphics/loop-light.png" type="Texture" id=39]
 [ext_resource path="res://graphics/window-light.png" type="Texture" id=40]
+[ext_resource path="res://WIP-Stuff/Back Glass-DevOff.png" type="Texture" id=41]
 
 [sub_resource type="PhysicsMaterial" id=1]
 bounce = 0.28
@@ -179,7 +180,7 @@ position = Vector2( 641.476, 1633.01 )
 rotation = -2.754
 
 [node name="DMDMoire" type="Sprite" parent="."]
-position = Vector2( 3.05176e-05, 7.62939e-06 )
+position = Vector2( 1412, 1588 )
 z_index = 10
 texture = ExtResource( 10 )
 offset = Vector2( 448, 112 )
@@ -188,7 +189,7 @@ region_rect = Rect2( -448, -112, 896, 224 )
 
 [node name="DMD" type="Node2D" parent="."]
 pause_mode = 1
-position = Vector2( 448, 112 )
+position = Vector2( 1882, 1691 )
 scale = Vector2( 7, 7 )
 z_index = 5
 script = ExtResource( 11 )
@@ -233,10 +234,6 @@ rotation = 3.53534
 [node name="EntryGate4" parent="." instance=ExtResource( 16 )]
 position = Vector2( 692.202, 386.801 )
 rotation = 3.80092
-
-[node name="EntryGate5" parent="." instance=ExtResource( 16 )]
-position = Vector2( 754, 340 )
-rotation = 5.20961
 
 [node name="Lane1Rollover" parent="." instance=ExtResource( 17 )]
 position = Vector2( 397.191, 345.404 )
@@ -569,9 +566,10 @@ scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 40 )
 off_light = Color( 1, 1, 1, 0 )
 
-[node name="PlayRollover" parent="." instance=ExtResource( 17 )]
-position = Vector2( 747, 337 )
-rotation = 2.1622
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 1901, 1107 )
+scale = Vector2( 1.9107, 1.9107 )
+texture = ExtResource( 41 )
 
 [connection signal="body_entered" from="Bumper1" to="." method="_on_Bumper1_body_entered"]
 [connection signal="body_entered" from="Bumper2" to="." method="_on_Bumper2_body_entered"]
