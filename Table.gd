@@ -98,6 +98,9 @@ var multiball_victory
 var bumper_victory
 var high_score
 var ticks
+var ball_save_used
+# because of my inabalitily to figure out how to do an if statement if a var is false-
+# the var REALLY should be named ball_saved_not_used, but I'm not fixing that.
 
 func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
@@ -249,6 +252,7 @@ func new_game():
 	target_hunter_victory = false
 	multiball_victory = false
 	bumper_victory = false
+	ball_save_used = true
 	
 	# Set up the table.
 	$Toy.start()
@@ -728,6 +732,8 @@ func _on_Exit_body_entered(body):
 		$BallEjectTimer.start()
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
 		$AudioStreamPlayer.play_save()
+		ball_save_used = false
+		print("ball drain- saved")
 	elif mode == MODE_WIZARD:
 		# If we're in wizard mode, eject a replacement ball.
 		$SaveLight.flash_on()
@@ -770,6 +776,7 @@ func _on_Exit_body_entered(body):
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
 			$BallLostTimer.start(OUT_TIME)
+			print ("ball drain- new ball")
 
 # These effects run when the ball enters the capture lane.
 func _on_BallCaptureRight_rollover_entered(body):
@@ -1090,23 +1097,28 @@ func _on_ToyRollover3_rollover_entered(body):
 # passing through the skill shot gates/ entering skill shot area.
 func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
-	$BallSaveTimer.start()
-	print("BallSaveTimer started~")
+	if ball_save_used :
+		$BallSaveTimer.start()
+		print("BallSaveTimer started~")
+
 
 func _on_SkillRollover2_rollover_entered(body):
 	check_skill_gate(2)
-	$BallSaveTimer.start()
-	print("BallSaveTimer started~")
+	if ball_save_used :
+		$BallSaveTimer.start()
+		print("BallSaveTimer started~")
 
 func _on_SkillRollover3_rollover_entered(body):
 	check_skill_gate(3)
-	$BallSaveTimer.start()
-	print("BallSaveTimer started~")
+	if ball_save_used :
+		$BallSaveTimer.start()
+		print("BallSaveTimer started~")
 
 func _on_NoSkillRollover_rollover_entered(body):
 	clear_skill_gates()
-	$BallSaveTimer.start()
-	print("BallSaveTimer started~")
+	if ball_save_used :
+		$BallSaveTimer.start()
+		print("BallSaveTimer started~")
 	
 # implement a pointer function to start the ball save timer
 # i have no clue where it is, gon go fishing, prob tag it inplace with func rolloverinplay
