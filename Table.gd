@@ -6,8 +6,8 @@ extends Node
 const HIGH_SCORE_FILE = "user://high_score"
 
 # Screen geometry constants
-const WINDOW_SIZE = Vector2(896, 2016)
-const BALL_ENTRY = Vector2(834, 1810)
+const WINDOW_SIZE = Vector2(2860, 1800)
+const BALL_ENTRY = Vector2(834, 1550)
 const BALL_EJECT = Vector2(0, -2000)
 
 # Force and other values for bumpers, kickers, nudging
@@ -99,8 +99,10 @@ var bumper_victory
 var high_score
 var ticks
 var ball_save_used
+var ball_save_timextension
 # because of my inabalitily to figure out how to do an if statement if a var is false-
-# the var REALLY should be named ball_saved_not_used, but I'm not fixing that.
+# the var REALLY should be named ball_saved_not_used and ball_save_timextension, but I'm not fixing that.
+var mulitiflashoff
 
 func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
@@ -129,6 +131,7 @@ func _ready():
 	attract(true)
 
 func _process(delta):
+	randomize()
 	# Handle input from player.
 	if Input.is_action_just_pressed("ui_start"):
 		if get_tree().paused:
@@ -206,12 +209,14 @@ func attract(startup = false):
 	$LaneLight3.flash(3.0, 1.8)
 	$LaneLight4.flash(3.0, 2.4)
 	$LaneLight5.flash(3.0)
+	$Multibackglass1.flash(4.0, 5.0)
 	$TargetHuntVictoryLight.flash(3.0, 0.75)
 	$LaneHuntVictoryLight.flash(3.0, 1.5)
 	$MultiballVictoryLight.flash(3.0, 2.25)
 	$BumperVictoryLight.flash(3.0, 0)
 	$LeftTargetLight.flash(3.0, 1.5)
 	$RightTargetLight.flash(3.0)
+	$Multibackglass2.flash(4.0, 2.0)
 	$SpecialLight1.flash(3.0, 1.0)
 	$SpecialLight2.flash(3.0, 2.0)
 	$SpecialLight3.flash(3.0)
@@ -222,6 +227,7 @@ func attract(startup = false):
 	$Bumper1.get_node("Light").flash(3.0, 1.0)
 	$Bumper2.get_node("Light").flash(3.0, 2.0)
 	$Bumper3.get_node("Light").flash(3.0)
+	$Multibackglass3.flash(4.0)
 	$LeftKickerLight.flash(3.0, 1.5)
 	$RightKickerLight.flash(3.0)
 	$SkillLight1.flash(3.0, 1.0)
@@ -253,6 +259,7 @@ func new_game():
 	multiball_victory = false
 	bumper_victory = false
 	ball_save_used = true
+	ball_save_timextension = true
 	
 	# Set up the table.
 	$Toy.start()
@@ -376,6 +383,7 @@ func new_ball(eject = false):
 		# But if we're not auto-ejecting the ball, we'll set up a skill shot opportunity.
 		choose_skill_gate()
 		$AudioStreamPlayer.play_new_ball()
+		ball_save_timextension = true
 	if (not eject) or (mode == MODE_MULTIBALL):
 		balls_in_play += 1
 	call_deferred("add_child", new_ball)
@@ -634,6 +642,9 @@ func clear_all_lights():
 	$LaneHuntVictoryLight.switch_off()
 	$TargetHuntVictoryLight.switch_off()
 	$MultiballVictoryLight.switch_off()
+	$Multibackglass1.switch_off()
+	$Multibackglass2.switch_off()
+	$Multibackglass3.switch_off()
 	$BumperVictoryLight.switch_off()
 	$X2Light.switch_off()
 	$X4Light.switch_off()
@@ -740,11 +751,15 @@ func _on_Exit_body_entered(body):
 		$BallEjectTimer.start()
 	else:
 		if mode == MODE_MULTIBALL:
+			
 			if balls_queued == 0 and balls_in_play == 1:
 				# If we're in multiball and there's only one ball left, turn off multiball.
 				halt_events()
 				multiball_victory = true
 				check_wizard_mode()
+				$Multibackglass1.flash_off()
+				$Multibackglass2.flash_off()
+				$Multibackglass3.flash_off()
 		else:
 			# If we're not in multiball, that's the end of this ball.
 			halt_events()
@@ -1037,11 +1052,17 @@ func _on_BallEjectTimer_timeout():
 func _on_WizardModeTimer_timeout():
 	halt_events()
 
-# Turn off ball save when this timer expires.
+# Turn off ball save when this timer expires... almost
+# function allows a 4 second ball save time extension while the ball save light flashes
 func _on_BallSaveTimer_timeout():
-	save_lit = false
 	$SaveLight.flash_off()
-	print("BallSaveTimer ended")
+	if ball_save_timextension:
+		$BallSaveTimer.start(4.0)
+		print("BallSaveTimer extended")
+		ball_save_timextension = false
+	else:
+		save_lit = false
+		print("BallSaveTimer ended")
 
 # Advance the game-over logic when this timer expires.
 func _on_GameOverTimer_timeout():
@@ -1080,27 +1101,29 @@ func _on_ToyRollover1_rollover_entered(body):
 	body.queue_free()
 	$Toy.raise_gate(1)
 	check_multiball()
+	$Multibackglass1.flash_on()
 
 func _on_ToyRollover2_rollover_entered(body):
 	print("ToyRollover2 hit")
 	body.queue_free()
 	$Toy.raise_gate(2)
 	check_multiball()
+	$Multibackglass2.flash_on()
 
 func _on_ToyRollover3_rollover_entered(body):
 	print("ToyRollover3 hit")
 	body.queue_free()
 	$Toy.raise_gate(3)
 	check_multiball()
+	$Multibackglass3.flash_on()
 
-# The following five functions react to the ball leaving the plunger lane,
-# passing through the skill shot gates/ entering skill shot area.
+# The following four functions react to the ball leaving the plunger lane,
+# passing through the skill shot gates.
 func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
 	if ball_save_used :
 		$BallSaveTimer.start()
 		print("BallSaveTimer started~")
-
 
 func _on_SkillRollover2_rollover_entered(body):
 	check_skill_gate(2)
@@ -1124,6 +1147,8 @@ func _on_NoSkillRollover_rollover_entered(body):
 # i have no clue where it is, gon go fishing, prob tag it inplace with func rolloverinplay
 # third line so I know where to come back to kek
 # hopefully this change auctually works
+
+# all of these comments from myself are silly :3 (no I am not removing them)
 
 # Turn off skill shot lights when this timer expires.
 func _on_SkillShotTimer_timeout():
@@ -1158,4 +1183,3 @@ func _on_CountdownTimer_timeout():
 				$AudioStreamPlayer.play_buzz()
 				$DMD.show_once($DMD.DISPLAY_TARGET_HUNT_EXPIRED)
 				halt_events()
-
