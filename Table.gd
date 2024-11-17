@@ -430,7 +430,7 @@ func add_score(points):
 	score += points
 	$DMD.set_parameter("score", score)
 	check_extra_ball()
-
+		
 # These effects run when the ball passes through the upper loop.
 func looped():
 	$LoopLight.flash_off()
@@ -468,7 +468,6 @@ func check_multiball():
 		$DMD.show_once($DMD.DISPLAY_MULTIBALL)
 		$LaneLight1.flash()
 		$LaneLight3.flash()
-		$SaveLight.switch_off()
 		$BallSaveTimer.stop()
 		$LaneLight1.switch_off()
 		$LaneLight2.switch_off()
@@ -609,7 +608,6 @@ func start_wizard_mode():
 	$BallSaveTimer.stop()
 	$ZapTimer.start()
 	lit_lane = 0
-	save_lit = false
 	
 	$DMD.show_once($DMD.DISPLAY_WIZARD)
 	$LaneLight1.flash(0.2)
@@ -737,8 +735,8 @@ func _on_Exit_body_entered(body):
 	body.queue_free()
 	if save_lit:
 		# If ball save is lit, eject a replacement ball.
-		save_lit = false
 		$SaveLight.flash_off()
+		ball_save_timextension = false
 		$BallSaveTimer.stop()
 		$BallEjectTimer.start()
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
@@ -1057,7 +1055,7 @@ func _on_WizardModeTimer_timeout():
 func _on_BallSaveTimer_timeout():
 	$SaveLight.flash_off()
 	if ball_save_timextension:
-		$BallSaveTimer.start(4.0)
+		$BallSaveTimer.start(3.0)
 		print("BallSaveTimer extended")
 		ball_save_timextension = false
 	else:
