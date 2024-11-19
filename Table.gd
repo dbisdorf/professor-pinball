@@ -7,7 +7,7 @@ const HIGH_SCORE_FILE = "user://high_score"
 
 # Screen geometry constants
 const WINDOW_SIZE = Vector2(2860, 1800)
-const BALL_ENTRY = Vector2(834, 1550)
+const BALL_ENTRY = Vector2(875, 1550)
 const BALL_EJECT = Vector2(0, -2000)
 
 # Force and other values for bumpers, kickers, nudging
@@ -260,6 +260,7 @@ func new_game():
 	bumper_victory = false
 	ball_save_used = true
 	ball_save_timextension = true
+	$DMD.DMDRESET()
 	
 	# Set up the table.
 	$Toy.start()
@@ -272,6 +273,7 @@ func new_game():
 	$ResetRightTargets.start()
 	new_ball()
 	$AudioStreamPlayer.play_begin()
+	$MultiballGate.lower()
 
 # Create a particle effect when the ball hits something interesting.
 func impact(ball, color):
@@ -468,7 +470,7 @@ func check_multiball():
 		$DMD.show_once($DMD.DISPLAY_MULTIBALL)
 		$LaneLight1.flash()
 		$LaneLight3.flash()
-		$BallSaveTimer.stop()
+		$BallSaveTimer.start(.1)
 		$LaneLight1.switch_off()
 		$LaneLight2.switch_off()
 		$LaneLight3.switch_off()
@@ -477,6 +479,7 @@ func check_multiball():
 		turn_off_specials()
 		$Toy.flash()
 		$AudioStreamPlayer.play_challenge()
+		$MultiballGate.raise()
 	else:
 		print("gates are not raised")
 		$DMD.show_once($DMD.DISPLAY_LOCKED)
@@ -605,7 +608,7 @@ func check_wizard_mode():
 func start_wizard_mode():
 	turn_off_specials()
 	$WizardReadyTimer.stop()
-	$BallSaveTimer.stop()
+	$BallSaveTimer.start(.1)
 	$ZapTimer.start()
 	lit_lane = 0
 	
@@ -733,11 +736,10 @@ func game_over():
 func _on_Exit_body_entered(body):
 	balls_in_play -= 1
 	body.queue_free()
-	if save_lit:
+	if ball_save_used:
 		# If ball save is lit, eject a replacement ball.
-		$SaveLight.flash_off()
 		ball_save_timextension = false
-		$BallSaveTimer.stop()
+		$BallSaveTimer.start(.1)
 		$BallEjectTimer.start()
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
 		$AudioStreamPlayer.play_save()
@@ -758,6 +760,7 @@ func _on_Exit_body_entered(body):
 				$Multibackglass1.flash_off()
 				$Multibackglass2.flash_off()
 				$Multibackglass3.flash_off()
+				$MultiballGate . lower()
 		else:
 			# If we're not in multiball, that's the end of this ball.
 			halt_events()
@@ -1053,15 +1056,16 @@ func _on_WizardModeTimer_timeout():
 # Turn off ball save when this timer expires... almost
 # function allows a 4 second ball save time extension while the ball save light flashes
 func _on_BallSaveTimer_timeout():
-	$SaveLight.flash_off()
 	if ball_save_timextension:
-		$BallSaveTimer.start(3.0)
+		$BallSaveTimer.start(2.0)
 		print("BallSaveTimer extended")
 		ball_save_timextension = false
+		$SaveLight.flash_off()
 	else:
 		save_lit = false
 		print("BallSaveTimer ended")
-
+		ball_save_used = false
+		
 # Advance the game-over logic when this timer expires.
 func _on_GameOverTimer_timeout():
 	game_over()
