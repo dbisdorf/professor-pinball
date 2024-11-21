@@ -1063,6 +1063,7 @@ func _on_BallSaveTimer_timeout():
 		$SaveLight.flash_off()
 	else:
 		save_lit = false
+		$SaveLight.switch_off()
 		print("BallSaveTimer ended")
 		ball_save_used = false
 		
