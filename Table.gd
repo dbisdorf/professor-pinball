@@ -101,8 +101,9 @@ var ticks
 var ball_save_used
 var ball_save_timextension
 # because of my inabalitily to figure out how to do an if statement if a var is false-
-# the var REALLY should be named ball_saved_not_used and ball_save_timextension, but I'm not fixing that.
+# the var REALLY should be named ball_saved_not_used and ball_save_timextension_not_used, but I'm not fixing that.
 var mulitiflashoff
+var save_ball
 
 func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
@@ -371,7 +372,7 @@ func new_ball(eject = false):
 		if save_next_ball:
 			# Usually, if we just lost a ball, we'll turn on ball save for the new ball.
 			save_next_ball = false
-			save_lit = true
+			$BallSaveTimer.start()
 			$SaveLight.switch_on()
 	# Put the ball on the table.
 	var new_ball = ball_scene.instance()
@@ -383,9 +384,11 @@ func new_ball(eject = false):
 			impact(new_ball, EJECT_IMPACT_COLOR)
 	else:
 		# But if we're not auto-ejecting the ball, we'll set up a skill shot opportunity.
+		# this is the normal exit point for a new, manually launched ball
 		choose_skill_gate()
 		$AudioStreamPlayer.play_new_ball()
 		ball_save_timextension = true
+		ball_save_used = true
 	if (not eject) or (mode == MODE_MULTIBALL):
 		balls_in_play += 1
 	call_deferred("add_child", new_ball)
@@ -736,14 +739,14 @@ func game_over():
 func _on_Exit_body_entered(body):
 	balls_in_play -= 1
 	body.queue_free()
-	if ball_save_used:
-		# If ball save is lit, eject a replacement ball.
-		ball_save_timextension = false
-		$BallSaveTimer.start(.1)
+	if save_ball:
+		# If we are to save the ball, save it, make sure to not save the next time, and eject a new ball
+		ball_save_timextension = true
+		$BallSaveTimer.start(1)
 		$BallEjectTimer.start()
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
 		$AudioStreamPlayer.play_save()
-		ball_save_used = false
+		save_ball = false
 		print("ball drain- saved")
 	elif mode == MODE_WIZARD:
 		# If we're in wizard mode, eject a replacement ball.
@@ -768,7 +771,6 @@ func _on_Exit_body_entered(body):
 			$X4Light.switch_off()
 			$X8Light.switch_off()
 			ball += 1
-			
 			# Calculate and display the end-of-ball bonuses.
 			var loops_bonus = loops * SCORE_BONUS
 			var lanes_bonus = lanes * SCORE_BONUS
@@ -1057,15 +1059,15 @@ func _on_WizardModeTimer_timeout():
 # function allows a 4 second ball save time extension while the ball save light flashes
 func _on_BallSaveTimer_timeout():
 	if ball_save_timextension:
-		$BallSaveTimer.start(2.0)
+		$BallSaveTimer.start(1.0)
 		print("BallSaveTimer extended")
 		ball_save_timextension = false
 		$SaveLight.flash_off()
 	else:
 		save_lit = false
-		$SaveLight.switch_off()
 		print("BallSaveTimer ended")
-		ball_save_used = false
+		save_ball = false
+		$SaveLight.switch_off()
 		
 # Advance the game-over logic when this timer expires.
 func _on_GameOverTimer_timeout():
@@ -1125,26 +1127,38 @@ func _on_ToyRollover3_rollover_entered(body):
 func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
 	if ball_save_used :
-		$BallSaveTimer.start()
+		$BallSaveTimer.start(15)
 		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_SkillRollover2_rollover_entered(body):
 	check_skill_gate(2)
 	if ball_save_used :
-		$BallSaveTimer.start()
+		$BallSaveTimer.start(15)
 		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_SkillRollover3_rollover_entered(body):
 	check_skill_gate(3)
 	if ball_save_used :
-		$BallSaveTimer.start()
+		$BallSaveTimer.start(15)
 		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_NoSkillRollover_rollover_entered(body):
 	clear_skill_gates()
 	if ball_save_used :
-		$BallSaveTimer.start()
+		$BallSaveTimer.start(15)
 		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 	
 # implement a pointer function to start the ball save timer
 # i have no clue where it is, gon go fishing, prob tag it inplace with func rolloverinplay
