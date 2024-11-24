@@ -389,6 +389,7 @@ func new_ball(eject = false):
 		$AudioStreamPlayer.play_new_ball()
 		ball_save_timextension = true
 		ball_save_used = true
+		$BallSaveTimer.stop()
 	if (not eject) or (mode == MODE_MULTIBALL):
 		balls_in_play += 1
 	call_deferred("add_child", new_ball)
@@ -1068,6 +1069,7 @@ func _on_BallSaveTimer_timeout():
 		print("BallSaveTimer ended")
 		save_ball = false
 		$SaveLight.switch_off()
+		$BallSaveTimer.stop()
 		
 # Advance the game-over logic when this timer expires.
 func _on_GameOverTimer_timeout():
