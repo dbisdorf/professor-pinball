@@ -222,6 +222,8 @@ func _ready():
 	
 	font.add_char(KEY_SPACE, 0, Rect2(48, 72, 8, 12))
 
+# there was a bug where the Wizard mode line keept showing, even after a new game.
+# this should fix any bugs related to that
 func DMDRESET():
 	displaying = 0
 	scroll_adjust = 0
