@@ -165,7 +165,6 @@ var repeat = false
 var sequence = []
 var sequence_index = 0
 var paused = false
-var graphics_mode_update_enable = true
 var scroll_adjust = 0
 
 # There is probably a better way to do this, but this didn't require much
@@ -340,6 +339,7 @@ func show_something(display_number, and_keep = false):
 		mode = MODE_GRAPHICS
 		texture_draw.position.y = DMD_HEIGHT * display_number
 		texture_draw.position.x = DMD_WIDTH
+		scroll_adjust = 0
 		$BMPUpdate.start()
 		update()
 	else:
@@ -398,17 +398,14 @@ func _on_DMDTimer_timeout():
 		show_something(DISPLAY_SCORE, true)
 	
 
-#the entire pourpose of this function patch is to animate
-#all of the baked in images- 4 frames intended
-#other than the jackpot change I made
+# this function updates a baked in image for the pourpose of an animation
+# the function is built around dispalying one of 4 images for each of the event images
+
 
 func _on_BMPUpdate_timeout():
-	if graphics_mode_update_enable:
-		if scroll_adjust > 4:
-			scroll_adjust = 0
-		texture_draw.position.x = DMD_WIDTH * scroll_adjust + (scroll_adjust+1)
-		scroll_adjust = scroll_adjust + 1
-		$BMPUpdate.start()
-		update()
-		
-	
+	if scroll_adjust > 4:
+		scroll_adjust = 0
+	texture_draw.position.x = DMD_WIDTH * scroll_adjust + (scroll_adjust+1)
+	scroll_adjust = scroll_adjust + 1
+	$BMPUpdate.start()
+	update()
