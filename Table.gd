@@ -76,7 +76,6 @@ var score
 var ball
 var last_ball
 var lit_lane
-var save_lit
 var save_next_ball
 var special_lit
 var skill_gate
@@ -102,7 +101,6 @@ var ball_save_used
 var ball_save_timextension
 # because of my inabalitily to figure out how to do an if statement if a var is false-
 # the var REALLY should be named ball_saved_not_used and ball_save_timextension_not_used, but I'm not fixing that.
-var mulitiflashoff
 var save_ball
 
 func _ready():
@@ -242,7 +240,6 @@ func new_game():
 	ball = 1
 	last_ball = 3
 	lit_lane = 0
-	save_lit = false
 	save_next_ball = true
 	special_lit = 1
 	skill_gate = 0
@@ -259,8 +256,6 @@ func new_game():
 	target_hunter_victory = false
 	multiball_victory = false
 	bumper_victory = false
-	ball_save_used = true
-	ball_save_timextension = true
 	$DMD.DMDRESET()
 	
 	# Set up the table.
@@ -469,7 +464,7 @@ func check_multiball():
 		lit_lane = 0
 		balls_queued = 3
 		balls_in_play = 0
-		save_lit = false
+		save_ball = false
 		$MultiballVictoryLight.flash_on()
 		$DMD.show_once($DMD.DISPLAY_MULTIBALL)
 		$LaneLight1.flash()
@@ -791,6 +786,7 @@ func _on_Exit_body_entered(body):
 
 			$DMD.show_and_keep($DMD.DISPLAY_BALL_LOST)
 			multiplier = 1
+			$BallSaveTimer.stop()
 			save_next_ball = true
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
@@ -1060,12 +1056,11 @@ func _on_WizardModeTimer_timeout():
 # function allows a 4 second ball save time extension while the ball save light flashes
 func _on_BallSaveTimer_timeout():
 	if ball_save_timextension:
-		$BallSaveTimer.start(1.0)
+		$BallSaveTimer.start(2.0)
 		print("BallSaveTimer extended")
 		ball_save_timextension = false
 		$SaveLight.flash_off()
 	else:
-		save_lit = false
 		print("BallSaveTimer ended")
 		save_ball = false
 		$SaveLight.switch_off()
@@ -1126,6 +1121,8 @@ func _on_ToyRollover3_rollover_entered(body):
 
 # The following four functions react to the ball leaving the plunger lane,
 # passing through the skill shot gates.
+# These rollover lanes also start the ball save timer-
+# guarenteed time on the board when it enters the play area instead of when the ball spawns
 func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
 	if ball_save_used :
@@ -1161,13 +1158,6 @@ func _on_NoSkillRollover_rollover_entered(body):
 		ball_save_used = false
 		save_ball = true
 		ball_save_timextension = true
-	
-# implement a pointer function to start the ball save timer
-# i have no clue where it is, gon go fishing, prob tag it inplace with func rolloverinplay
-# third line so I know where to come back to kek
-# hopefully this change auctually works
-
-# all of these comments from myself are silly :3 (no I am not removing them)
 
 # Turn off skill shot lights when this timer expires.
 func _on_SkillShotTimer_timeout():
