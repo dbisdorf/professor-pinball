@@ -101,7 +101,6 @@ var ball_save_used
 var ball_save_timextension
 # because of my inabalitily to figure out how to do an if statement if a var is false-
 # the var REALLY should be named ball_saved_not_used and ball_save_timextension_not_used, but I'm not fixing that.
-var mulitiflashoff
 var save_ball
 
 func _ready():
@@ -787,6 +786,7 @@ func _on_Exit_body_entered(body):
 
 			$DMD.show_and_keep($DMD.DISPLAY_BALL_LOST)
 			multiplier = 1
+			$BallSaveTimer.stop()
 			save_next_ball = true
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
