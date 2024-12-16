@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mulit3.png-081b5b32c4f621ca89042c878763c207.stex"
+path="res://.import/mulit2.png-48eba2ecd5850888108232914e20a03a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://WIP-Stuff/mulit3.png"
-dest_files=[ "res://.import/mulit3.png-081b5b32c4f621ca89042c878763c207.stex" ]
+source_file="res://graphics/mulit2.png"
+dest_files=[ "res://.import/mulit2.png-48eba2ecd5850888108232914e20a03a.stex" ]
 
 [params]
 

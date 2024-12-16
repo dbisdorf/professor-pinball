@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dmd-animate.png-406f10d9b4dcf3501b49f25184860a50.stex"
+path="res://.import/Back Glass-devOn.png-e35ad7e7a2b18f034b2a0536c2d39924.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://WIP-Stuff/dmd-animate.png"
-dest_files=[ "res://.import/dmd-animate.png-406f10d9b4dcf3501b49f25184860a50.stex" ]
+source_file="res://graphics/Back Glass-devOn.png"
+dest_files=[ "res://.import/Back Glass-devOn.png-e35ad7e7a2b18f034b2a0536c2d39924.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Screenshot 2024-11-16 101649.png-358d8ba1758d25c56789b502c02b5403.stex"
+path="res://.import/mulit1.png-4c28852ff518cb2c2ac18be654f487c7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://WIP-Stuff/Screenshot 2024-11-16 101649.png"
-dest_files=[ "res://.import/Screenshot 2024-11-16 101649.png-358d8ba1758d25c56789b502c02b5403.stex" ]
+source_file="res://graphics/mulit1.png"
+dest_files=[ "res://.import/mulit1.png-4c28852ff518cb2c2ac18be654f487c7.stex" ]
 
 [params]
 

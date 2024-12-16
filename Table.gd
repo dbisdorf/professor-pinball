@@ -2,11 +2,14 @@
 
 extends Node
 
+#this var sets up the envirement for portrait play, for backwards compatibility.
+# set this var to TRUE to make the table arraged in portrait, origional to the project, false will be as seen as in the editor
+var portrate = true
+
 # High score file location
 const HIGH_SCORE_FILE = "user://high_score"
 
 # Screen geometry constants
-const WINDOW_SIZE = Vector2(2860, 1800)
 const BALL_ENTRY = Vector2(875, 1550)
 const BALL_EJECT = Vector2(0, -2000)
 
@@ -99,6 +102,7 @@ var high_score
 var ticks
 var ball_save_used
 var ball_save_timextension
+var window_size
 # because of my inabalitily to figure out how to do an if statement if a var is false-
 # the var REALLY should be named ball_saved_not_used and ball_save_timextension_not_used, but I'm not fixing that.
 var save_ball
@@ -108,7 +112,15 @@ func _ready():
 	
 	# The game starts at a low resolution so the splash screen will look correct.
 	# These lines set us to the correct higher resolution.
-	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, WINDOW_SIZE)
+	
+	#this sets the board up for portrait mode
+	if portrate == true:
+		$DMDMoire.position = Vector2(40, -195)
+		var WINDOW_SIZE = Rect2(38, -195, 896, 2016)
+		$DMD.position = Vector2(487, -82)
+	else:
+		var window_size = Vector2(2860, 1800)
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, window_size)
 	OS.set_window_fullscreen(true)
 	
 	# Read the high score file, or set up a new file.
