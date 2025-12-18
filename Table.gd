@@ -2,12 +2,15 @@
 
 extends Node
 
+#this var sets up the envirement for portrait play, for backwards compatibility.
+# set this var to TRUE to make the table arraged in portrait, origional to the project, false will be as seen as in the editor
+var portrate = true
+
 # High score file location
 const HIGH_SCORE_FILE = "user://high_score"
 
 # Screen geometry constants
-const WINDOW_SIZE = Vector2(896, 2016)
-const BALL_ENTRY = Vector2(834, 1810)
+const BALL_ENTRY = Vector2(875, 1550)
 const BALL_EJECT = Vector2(0, -2000)
 
 # Force and other values for bumpers, kickers, nudging
@@ -76,7 +79,6 @@ var score
 var ball
 var last_ball
 var lit_lane
-var save_lit
 var save_next_ball
 var special_lit
 var skill_gate
@@ -98,13 +100,27 @@ var multiball_victory
 var bumper_victory
 var high_score
 var ticks
+var ball_save_used
+var ball_save_timextension
+var window_size
+# because of my inabalitily to figure out how to do an if statement if a var is false-
+# the var REALLY should be named ball_saved_not_used and ball_save_timextension_not_used, but I'm not fixing that.
+var save_ball
 
 func _ready():
 	#Engine.set_time_scale(0.5) Uncomment this to slow the game down
 	
 	# The game starts at a low resolution so the splash screen will look correct.
 	# These lines set us to the correct higher resolution.
-	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, WINDOW_SIZE)
+	
+	#this sets the board up for portrait mode
+	if portrate == true:
+		$DMDMoire.position = Vector2(40, -195)
+		var WINDOW_SIZE = Rect2(38, -195, 896, 2016)
+		$DMD.position = Vector2(487, -82)
+	else:
+		var window_size = Vector2(2860, 1800)
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, window_size)
 	OS.set_window_fullscreen(true)
 	
 	# Read the high score file, or set up a new file.
@@ -126,6 +142,7 @@ func _ready():
 	attract(true)
 
 func _process(delta):
+	randomize()
 	# Handle input from player.
 	if Input.is_action_just_pressed("ui_start"):
 		if get_tree().paused:
@@ -203,12 +220,14 @@ func attract(startup = false):
 	$LaneLight3.flash(3.0, 1.8)
 	$LaneLight4.flash(3.0, 2.4)
 	$LaneLight5.flash(3.0)
+	$Multibackglass1.flash(4.0, 5.0)
 	$TargetHuntVictoryLight.flash(3.0, 0.75)
 	$LaneHuntVictoryLight.flash(3.0, 1.5)
 	$MultiballVictoryLight.flash(3.0, 2.25)
 	$BumperVictoryLight.flash(3.0, 0)
 	$LeftTargetLight.flash(3.0, 1.5)
 	$RightTargetLight.flash(3.0)
+	$Multibackglass2.flash(4.0, 2.0)
 	$SpecialLight1.flash(3.0, 1.0)
 	$SpecialLight2.flash(3.0, 2.0)
 	$SpecialLight3.flash(3.0)
@@ -219,6 +238,7 @@ func attract(startup = false):
 	$Bumper1.get_node("Light").flash(3.0, 1.0)
 	$Bumper2.get_node("Light").flash(3.0, 2.0)
 	$Bumper3.get_node("Light").flash(3.0)
+	$Multibackglass3.flash(4.0)
 	$LeftKickerLight.flash(3.0, 1.5)
 	$RightKickerLight.flash(3.0)
 	$SkillLight1.flash(3.0, 1.0)
@@ -232,7 +252,6 @@ func new_game():
 	ball = 1
 	last_ball = 3
 	lit_lane = 0
-	save_lit = false
 	save_next_ball = true
 	special_lit = 1
 	skill_gate = 0
@@ -249,6 +268,7 @@ func new_game():
 	target_hunter_victory = false
 	multiball_victory = false
 	bumper_victory = false
+	$DMD.DMDRESET()
 	
 	# Set up the table.
 	$Toy.start()
@@ -261,6 +281,7 @@ func new_game():
 	$ResetRightTargets.start()
 	new_ball()
 	$AudioStreamPlayer.play_begin()
+	$MultiballGate.lower()
 
 # Create a particle effect when the ball hits something interesting.
 func impact(ball, color):
@@ -358,9 +379,8 @@ func new_ball(eject = false):
 		if save_next_ball:
 			# Usually, if we just lost a ball, we'll turn on ball save for the new ball.
 			save_next_ball = false
-			save_lit = true
-			$SaveLight.switch_on()
 			$BallSaveTimer.start()
+			$SaveLight.switch_on()
 	# Put the ball on the table.
 	var new_ball = ball_scene.instance()
 	new_ball.set_global_position(BALL_ENTRY)
@@ -371,8 +391,12 @@ func new_ball(eject = false):
 			impact(new_ball, EJECT_IMPACT_COLOR)
 	else:
 		# But if we're not auto-ejecting the ball, we'll set up a skill shot opportunity.
+		# this is the normal exit point for a new, manually launched ball
 		choose_skill_gate()
 		$AudioStreamPlayer.play_new_ball()
+		ball_save_timextension = true
+		ball_save_used = true
+		$BallSaveTimer.stop()
 	if (not eject) or (mode == MODE_MULTIBALL):
 		balls_in_play += 1
 	call_deferred("add_child", new_ball)
@@ -419,7 +443,7 @@ func add_score(points):
 	score += points
 	$DMD.set_parameter("score", score)
 	check_extra_ball()
-
+		
 # These effects run when the ball passes through the upper loop.
 func looped():
 	$LoopLight.flash_off()
@@ -452,13 +476,12 @@ func check_multiball():
 		lit_lane = 0
 		balls_queued = 3
 		balls_in_play = 0
-		save_lit = false
+		save_ball = false
 		$MultiballVictoryLight.flash_on()
 		$DMD.show_once($DMD.DISPLAY_MULTIBALL)
 		$LaneLight1.flash()
 		$LaneLight3.flash()
-		$SaveLight.switch_off()
-		$BallSaveTimer.stop()
+		$BallSaveTimer.start(.1)
 		$LaneLight1.switch_off()
 		$LaneLight2.switch_off()
 		$LaneLight3.switch_off()
@@ -467,6 +490,7 @@ func check_multiball():
 		turn_off_specials()
 		$Toy.flash()
 		$AudioStreamPlayer.play_challenge()
+		$MultiballGate.raise()
 	else:
 		print("gates are not raised")
 		$DMD.show_once($DMD.DISPLAY_LOCKED)
@@ -595,10 +619,9 @@ func check_wizard_mode():
 func start_wizard_mode():
 	turn_off_specials()
 	$WizardReadyTimer.stop()
-	$BallSaveTimer.stop()
+	$BallSaveTimer.start(.1)
 	$ZapTimer.start()
 	lit_lane = 0
-	save_lit = false
 	
 	$DMD.show_once($DMD.DISPLAY_WIZARD)
 	$LaneLight1.flash(0.2)
@@ -631,6 +654,9 @@ func clear_all_lights():
 	$LaneHuntVictoryLight.switch_off()
 	$TargetHuntVictoryLight.switch_off()
 	$MultiballVictoryLight.switch_off()
+	$Multibackglass1.switch_off()
+	$Multibackglass2.switch_off()
+	$Multibackglass3.switch_off()
 	$BumperVictoryLight.switch_off()
 	$X2Light.switch_off()
 	$X4Light.switch_off()
@@ -721,25 +747,31 @@ func game_over():
 func _on_Exit_body_entered(body):
 	balls_in_play -= 1
 	body.queue_free()
-	if save_lit:
-		# If ball save is lit, eject a replacement ball.
-		save_lit = false
-		$SaveLight.flash_off()
-		$BallSaveTimer.stop()
+	if save_ball:
+		# If we are to save the ball, save it, make sure to not save the next time, and eject a new ball
+		ball_save_timextension = true
+		$BallSaveTimer.start(1)
 		$BallEjectTimer.start()
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
 		$AudioStreamPlayer.play_save()
+		save_ball = false
+		print("ball drain- saved")
 	elif mode == MODE_WIZARD:
 		# If we're in wizard mode, eject a replacement ball.
 		$SaveLight.flash_on()
 		$BallEjectTimer.start()
 	else:
 		if mode == MODE_MULTIBALL:
+			
 			if balls_queued == 0 and balls_in_play == 1:
 				# If we're in multiball and there's only one ball left, turn off multiball.
 				halt_events()
 				multiball_victory = true
 				check_wizard_mode()
+				$Multibackglass1.flash_off()
+				$Multibackglass2.flash_off()
+				$Multibackglass3.flash_off()
+				$MultiballGate . lower()
 		else:
 			# If we're not in multiball, that's the end of this ball.
 			halt_events()
@@ -747,7 +779,6 @@ func _on_Exit_body_entered(body):
 			$X4Light.switch_off()
 			$X8Light.switch_off()
 			ball += 1
-			
 			# Calculate and display the end-of-ball bonuses.
 			var loops_bonus = loops * SCORE_BONUS
 			var lanes_bonus = lanes * SCORE_BONUS
@@ -767,10 +798,12 @@ func _on_Exit_body_entered(body):
 
 			$DMD.show_and_keep($DMD.DISPLAY_BALL_LOST)
 			multiplier = 1
+			$BallSaveTimer.stop()
 			save_next_ball = true
 			mode = MODE_BALL_OUT
 			$AudioStreamPlayer.play_drain()
 			$BallLostTimer.start(OUT_TIME)
+			print ("ball drain- new ball")
 
 # These effects run when the ball enters the capture lane.
 func _on_BallCaptureRight_rollover_entered(body):
@@ -1031,11 +1064,20 @@ func _on_BallEjectTimer_timeout():
 func _on_WizardModeTimer_timeout():
 	halt_events()
 
-# Turn off ball save when this timer expires.
+# Turn off ball save when this timer expires... almost
+# function allows a 4 second ball save time extension while the ball save light flashes
 func _on_BallSaveTimer_timeout():
-	save_lit = false
-	$SaveLight.flash_off()
-
+	if ball_save_timextension:
+		$BallSaveTimer.start(2.0)
+		print("BallSaveTimer extended")
+		ball_save_timextension = false
+		$SaveLight.flash_off()
+	else:
+		print("BallSaveTimer ended")
+		save_ball = false
+		$SaveLight.switch_off()
+		$BallSaveTimer.stop()
+		
 # Advance the game-over logic when this timer expires.
 func _on_GameOverTimer_timeout():
 	game_over()
@@ -1073,32 +1115,61 @@ func _on_ToyRollover1_rollover_entered(body):
 	body.queue_free()
 	$Toy.raise_gate(1)
 	check_multiball()
+	$Multibackglass1.flash_on()
 
 func _on_ToyRollover2_rollover_entered(body):
 	print("ToyRollover2 hit")
 	body.queue_free()
 	$Toy.raise_gate(2)
 	check_multiball()
+	$Multibackglass2.flash_on()
 
 func _on_ToyRollover3_rollover_entered(body):
 	print("ToyRollover3 hit")
 	body.queue_free()
 	$Toy.raise_gate(3)
 	check_multiball()
+	$Multibackglass3.flash_on()
 
 # The following four functions react to the ball leaving the plunger lane,
 # passing through the skill shot gates.
+# These rollover lanes also start the ball save timer-
+# guarenteed time on the board when it enters the play area instead of when the ball spawns
 func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
+	if ball_save_used :
+		$BallSaveTimer.start(15)
+		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_SkillRollover2_rollover_entered(body):
 	check_skill_gate(2)
+	if ball_save_used :
+		$BallSaveTimer.start(15)
+		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_SkillRollover3_rollover_entered(body):
 	check_skill_gate(3)
+	if ball_save_used :
+		$BallSaveTimer.start(15)
+		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 func _on_NoSkillRollover_rollover_entered(body):
 	clear_skill_gates()
+	if ball_save_used :
+		$BallSaveTimer.start(15)
+		print("BallSaveTimer started~")
+		ball_save_used = false
+		save_ball = true
+		ball_save_timextension = true
 
 # Turn off skill shot lights when this timer expires.
 func _on_SkillShotTimer_timeout():
@@ -1133,4 +1204,3 @@ func _on_CountdownTimer_timeout():
 				$AudioStreamPlayer.play_buzz()
 				$DMD.show_once($DMD.DISPLAY_TARGET_HUNT_EXPIRED)
 				halt_events()
-

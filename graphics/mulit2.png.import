@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/window-light.png-e3334a24f00580340da538ec673409b2.stex"
+path="res://.import/mulit2.png-48eba2ecd5850888108232914e20a03a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/window-light.png"
-dest_files=[ "res://.import/window-light.png-e3334a24f00580340da538ec673409b2.stex" ]
+source_file="res://graphics/mulit2.png"
+dest_files=[ "res://.import/mulit2.png-48eba2ecd5850888108232914e20a03a.stex" ]
 
 [params]
 

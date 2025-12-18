@@ -12,3 +12,4 @@ func _on_Rollover_body_entered(body):
 	# With the frame of reference rotated, we want to raise a signal when the ball is moving "up."
 	if rotated_velocity.y < 0.0:
 		emit_signal("rollover_entered", body)
+

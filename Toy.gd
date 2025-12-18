@@ -7,6 +7,9 @@ const FAST_SPEED = 5
 
 var speed = 0
 var resetting = false
+var gate_1_raised
+var agte_2_raised
+var gate_3_raised
 
 func _process(delta):
 	if speed > 0:

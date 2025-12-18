@@ -2,6 +2,8 @@ extends Node2D
 
 # This logic and the associated graphic resources simulate a low-res dot matrix display.
 
+
+
 # We're simulating a display with a resolution of 128x32.
 const DMD_WIDTH = 128
 const DMD_HEIGHT = 32
@@ -60,8 +62,8 @@ enum {
 const DISPLAY_TIME = {
 	DISPLAY_LANE_HUNTED: 2.0,
 	DISPLAY_X2: 2.0,
-	DISPLAY_X4: 2.0,
-	DISPLAY_X8: 2.0,
+	DISPLAY_X4: 2.5,
+	DISPLAY_X8: 3.0,
 	DISPLAY_LOCKED: 3.0,
 	DISPLAY_BALL_SAVED: 2.0,
 	DISPLAY_LANE_REWARD: 3.0,
@@ -118,7 +120,7 @@ const DISPLAY_PRIORITY = {
 	DISPLAY_MULTIBALL: 5,
 	DISPLAY_TARGET_BANK_REWARD: 0,
 	DISPLAY_LOOP: 0,
-	DISPLAY_JACKPOT: 0,
+	DISPLAY_JACKPOT: 2,
 	DISPLAY_WIZARD_JACKPOT: 3,
 	DISPLAY_SCORE: 0,
 	DISPLAY_FINAL_SCORE: 0,
@@ -148,7 +150,7 @@ const LANE_HUNT_SEQ = [DISPLAY_LANE_HUNT, DISPLAY_LANE_HUNT_RULES]
 const TARGET_HUNT_SEQ = [DISPLAY_TARGET_HUNT, DISPLAY_TARGET_HUNT_RULES]
 const BONUS_SEQ = [DISPLAY_LANE_BONUS, DISPLAY_LOOP_BONUS, DISPLAY_TARGET_BONUS, DISPLAY_TOTAL_BONUS]
 
-var dmd_texture = preload("res://graphics/dmd.png")
+var dmd_texture = preload("res://WIP-Stuff/dmd-animate.png")
 var font
 var font_texture = preload("res://graphics/font.png")
 var upper_text
@@ -163,6 +165,7 @@ var repeat = false
 var sequence = []
 var sequence_index = 0
 var paused = false
+var scroll_adjust = 0
 
 # There is probably a better way to do this, but this didn't require much
 # thought, and it works. We're mapping characters to specific positions
@@ -218,6 +221,14 @@ func _ready():
 	font.add_char(KEY_EXCLAM, 0, Rect2(24, 60, 8, 12))
 	
 	font.add_char(KEY_SPACE, 0, Rect2(48, 72, 8, 12))
+
+# there was a bug where the Wizard mode line keept showing, even after a new game.
+# this should fix any bugs related to that
+func DMDRESET():
+	displaying = 0
+	scroll_adjust = 0
+	#other stuff in the future ig
+	return
 
 func _draw():
 	draw_rect(DMD_RECT, BLANK_COLOR, true)
@@ -326,8 +337,12 @@ func show_something(display_number, and_keep = false):
 	displaying = display_number
 	if display_number < DISPLAY_CANNED_TEXT:
 		# If we're showing a bitmap, figure out where it is in the texture and display it.
+		# This is where the bitmap is shown, bitmap updates on timer timeout
 		mode = MODE_GRAPHICS
 		texture_draw.position.y = DMD_HEIGHT * display_number
+		texture_draw.position.x = DMD_WIDTH
+		scroll_adjust = 0
+		$BMPUpdate.start()
 		update()
 	else:
 		# If we're showing text, construct it from strings and display it.
@@ -384,3 +399,15 @@ func _on_DMDTimer_timeout():
 		# If we're not displaying a sequence, go back to showing the score.
 		show_something(DISPLAY_SCORE, true)
 	
+
+# this function updates a baked in image for the pourpose of an animation
+# the function is built around dispalying one of 4 images for each of the event images
+
+
+func _on_BMPUpdate_timeout():
+	if scroll_adjust > 4:
+		scroll_adjust = 0
+	texture_draw.position.x = DMD_WIDTH * scroll_adjust + (scroll_adjust+1)
+	scroll_adjust = scroll_adjust + 1
+	$BMPUpdate.start()
+	update()

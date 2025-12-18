@@ -46,7 +46,7 @@ func flash_off():
 # Flash the light continuously.
 # The first parameter is the duration of each on/off stage.
 # The second (optional) parameter is the duration of the initial flash.
-func flash(flash_time = 0.3, first_time = 0.0):
+func flash(flash_time = 0.3, first_time = 0.5):
 	set_modulate(on_light)
 	flashes = -1
 	$Timer.set_one_shot(false)
