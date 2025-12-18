@@ -468,9 +468,9 @@ func check_extra_ball():
 
 # Check whether the player has triggered multiball.
 func check_multiball():
-	print("entering check_multiball")
+	#print("entering check_multiball")
 	if $Toy.are_all_gates_raised():
-		print("all gates are raised")
+		#print("all gates are raised")
 		halt_events()
 		mode = MODE_MULTIBALL
 		lit_lane = 0
@@ -492,10 +492,10 @@ func check_multiball():
 		$AudioStreamPlayer.play_challenge()
 		$MultiballGate.raise()
 	else:
-		print("gates are not raised")
+		#print("gates are not raised")
 		$DMD.show_once($DMD.DISPLAY_LOCKED)
 		$Toy.flash_off()
-	print("starting BallEjectTimer")
+	#print("starting BallEjectTimer")
 	$BallEjectTimer.start()
 
 # Change which lane is lit.
@@ -755,7 +755,7 @@ func _on_Exit_body_entered(body):
 		$DMD.show_once($DMD.DISPLAY_BALL_SAVED)
 		$AudioStreamPlayer.play_save()
 		save_ball = false
-		print("ball drain- saved")
+		#print("ball drain- saved")
 	elif mode == MODE_WIZARD:
 		# If we're in wizard mode, eject a replacement ball.
 		$SaveLight.flash_on()
@@ -1069,11 +1069,11 @@ func _on_WizardModeTimer_timeout():
 func _on_BallSaveTimer_timeout():
 	if ball_save_timextension:
 		$BallSaveTimer.start(2.0)
-		print("BallSaveTimer extended")
+		#print("BallSaveTimer extended")
 		ball_save_timextension = false
 		$SaveLight.flash_off()
 	else:
-		print("BallSaveTimer ended")
+		#print("BallSaveTimer ended")
 		save_ball = false
 		$SaveLight.switch_off()
 		$BallSaveTimer.stop()
@@ -1111,21 +1111,21 @@ func _on_NudgeUpTimer_timeout():
 
 # The following three functions react when the ball enters the rotating toy gates.
 func _on_ToyRollover1_rollover_entered(body):
-	print("ToyRollover1 hit")
+	#print("ToyRollover1 hit")
 	body.queue_free()
 	$Toy.raise_gate(1)
 	check_multiball()
 	$Multibackglass1.flash_on()
 
 func _on_ToyRollover2_rollover_entered(body):
-	print("ToyRollover2 hit")
+	#print("ToyRollover2 hit")
 	body.queue_free()
 	$Toy.raise_gate(2)
 	check_multiball()
 	$Multibackglass2.flash_on()
 
 func _on_ToyRollover3_rollover_entered(body):
-	print("ToyRollover3 hit")
+	#print("ToyRollover3 hit")
 	body.queue_free()
 	$Toy.raise_gate(3)
 	check_multiball()
@@ -1139,7 +1139,7 @@ func _on_SkillRollover1_rollover_entered(body):
 	check_skill_gate(1)
 	if ball_save_used :
 		$BallSaveTimer.start(15)
-		print("BallSaveTimer started~")
+		#print("BallSaveTimer started~")
 		ball_save_used = false
 		save_ball = true
 		ball_save_timextension = true
@@ -1148,7 +1148,7 @@ func _on_SkillRollover2_rollover_entered(body):
 	check_skill_gate(2)
 	if ball_save_used :
 		$BallSaveTimer.start(15)
-		print("BallSaveTimer started~")
+		#print("BallSaveTimer started~")
 		ball_save_used = false
 		save_ball = true
 		ball_save_timextension = true
@@ -1157,7 +1157,7 @@ func _on_SkillRollover3_rollover_entered(body):
 	check_skill_gate(3)
 	if ball_save_used :
 		$BallSaveTimer.start(15)
-		print("BallSaveTimer started~")
+		#print("BallSaveTimer started~")
 		ball_save_used = false
 		save_ball = true
 		ball_save_timextension = true
@@ -1166,7 +1166,7 @@ func _on_NoSkillRollover_rollover_entered(body):
 	clear_skill_gates()
 	if ball_save_used :
 		$BallSaveTimer.start(15)
-		print("BallSaveTimer started~")
+		#print("BallSaveTimer started~")
 		ball_save_used = false
 		save_ball = true
 		ball_save_timextension = true
