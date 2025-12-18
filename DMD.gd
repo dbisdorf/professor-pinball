@@ -407,7 +407,7 @@ func _on_DMDTimer_timeout():
 func _on_BMPUpdate_timeout():
 	if scroll_adjust > 4:
 		scroll_adjust = 0
-	texture_draw.position.x = DMD_WIDTH * scroll_adjust + (scroll_adjust+1)
+	texture_draw.position.x = DMD_WIDTH * scroll_adjust
 	scroll_adjust = scroll_adjust + 1
 	$BMPUpdate.start()
 	update()

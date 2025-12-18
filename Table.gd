@@ -118,8 +118,8 @@ func _ready():
 	if portrate == true:
 		$DMDMoire.position = Vector2(40, -194)
 		window_size = Vector2(896, 2016)
-		$DMD.position = Vector2(487, -82)
-		get_viewport().set_global_canvas_transform(Transform2D(Vector2(1, 0), Vector2(0, 1), Vector2(0, 194)))
+		$DMD.position = Vector2(488, -82)
+		get_viewport().set_global_canvas_transform(Transform2D(Vector2(1, 0), Vector2(0, 1), Vector2(-40, 194)))
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, window_size)
 	OS.set_window_fullscreen(true)
 	
