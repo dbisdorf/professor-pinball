@@ -150,7 +150,7 @@ const LANE_HUNT_SEQ = [DISPLAY_LANE_HUNT, DISPLAY_LANE_HUNT_RULES]
 const TARGET_HUNT_SEQ = [DISPLAY_TARGET_HUNT, DISPLAY_TARGET_HUNT_RULES]
 const BONUS_SEQ = [DISPLAY_LANE_BONUS, DISPLAY_LOOP_BONUS, DISPLAY_TARGET_BONUS, DISPLAY_TOTAL_BONUS]
 
-var dmd_texture = preload("res://WIP-Stuff/dmd-animate.png")
+var dmd_texture = preload("res://graphics/dmd-animate.png")
 var font
 var font_texture = preload("res://graphics/font.png")
 var upper_text

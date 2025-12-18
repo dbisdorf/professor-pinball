@@ -114,12 +114,12 @@ func _ready():
 	# These lines set us to the correct higher resolution.
 	
 	#this sets the board up for portrait mode
+	var window_size = Vector2(2860, 1800)
 	if portrate == true:
-		$DMDMoire.position = Vector2(40, -195)
-		var WINDOW_SIZE = Rect2(38, -195, 896, 2016)
+		$DMDMoire.position = Vector2(40, -194)
+		window_size = Vector2(896, 2016)
 		$DMD.position = Vector2(487, -82)
-	else:
-		var window_size = Vector2(2860, 1800)
+		get_viewport().set_global_canvas_transform(Transform2D(Vector2(1, 0), Vector2(0, 1), Vector2(0, 194)))
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_2D, SceneTree.STRETCH_ASPECT_KEEP, window_size)
 	OS.set_window_fullscreen(true)
 	
